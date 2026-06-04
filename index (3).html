@@ -1,0 +1,2541 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Blanca BLW 🥕</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Blanca BLW">
+<style>
+/* ══════════════════════════════════════════
+   DESIGN TOKENS
+══════════════════════════════════════════ */
+:root {
+  --c1: #FF6B6B; /* coral/rojo */
+  --c2: #FFB347; /* naranja */
+  --c3: #FFD93D; /* amarillo */
+  --c4: #6BCB77; /* verde */
+  --c5: #4D96FF; /* azul */
+  --c6: #C77DFF; /* morado */
+  --c7: #FF9FF3; /* rosa */
+
+  --bg: #FFF9F2;
+  --surface: #FFFFFF;
+  --text: #2D1B0E;
+  --text2: #7A6058;
+  --border: #F0E4D8;
+
+  --r-lg: 24px;
+  --r-xl: 32px;
+  --r-full: 100px;
+
+  --shadow-sm: 0 2px 12px rgba(45,27,14,0.08);
+  --shadow-md: 0 6px 24px rgba(45,27,14,0.12);
+  --shadow-lg: 0 16px 48px rgba(45,27,14,0.16);
+
+  --bottom-nav-h: 72px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: calc(var(--bottom-nav-h) + var(--safe-bottom) + 16px);
+  overflow-x: hidden;
+}
+
+/* ══════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════ */
+.app-header {
+  background: var(--surface);
+  padding: 16px 20px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  border-bottom: 2px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.header-logo {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.5rem;
+  background: linear-gradient(135deg, var(--c1), var(--c2), var(--c3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.header-subtitle {
+  font-size: 0.72rem;
+  color: var(--text2);
+  font-weight: 600;
+  margin-top: 1px;
+}
+
+.header-right {
+  width: 40px; height: 40px;
+  background: linear-gradient(135deg, var(--c3), var(--c2));
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ══════════════════════════════════════════
+   BOTTOM NAV
+══════════════════════════════════════════ */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: calc(var(--bottom-nav-h) + var(--safe-bottom));
+  background: var(--surface);
+  border-top: 2px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  padding-top: 8px;
+  z-index: 300;
+  box-shadow: 0 -4px 24px rgba(45,27,14,0.10);
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 4px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: 'Nunito', sans-serif;
+  transition: transform 0.15s;
+  position: relative;
+}
+
+.nav-item:active { transform: scale(0.92); }
+
+.nav-icon {
+  width: 44px; height: 44px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.35rem;
+  transition: all 0.2s;
+  background: transparent;
+}
+
+.nav-item.active .nav-icon {
+  transform: translateY(-2px);
+}
+
+.nav-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text2);
+  transition: color 0.2s;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+
+.nav-item.active .nav-label { color: var(--text); }
+
+/* Color coding per nav item */
+.nav-item[data-nav="home"].active .nav-icon { background: linear-gradient(135deg, #FFD93D22, #FFB34722); }
+.nav-item[data-nav="diario"].active .nav-icon { background: #FF6B6B18; }
+.nav-item[data-nav="diariocacas"].active .nav-icon { background: #6BCB7718; }
+.nav-item[data-nav="diariosueño"].active .nav-icon { background: #4D96FF18; }
+.nav-item[data-nav="more"].active .nav-icon { background: #C77DFF18; }
+
+/* ══════════════════════════════════════════
+   SCREENS
+══════════════════════════════════════════ */
+.screen {
+  display: none;
+  animation: slideUp 0.28s cubic-bezier(.4,0,.2,1);
+  min-height: calc(100vh - 80px - var(--bottom-nav-h));
+}
+.screen.active { display: block; }
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ══════════════════════════════════════════
+   HOME SCREEN
+══════════════════════════════════════════ */
+.home-hero {
+  background: linear-gradient(160deg, #FFD93D 0%, #FFB347 50%, #FF8C69 100%);
+  padding: 28px 20px 36px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.home-hero::before {
+  content: '';
+  position: absolute;
+  width: 200px; height: 200px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 50%;
+  top: -80px; right: -60px;
+}
+
+.home-hero::after {
+  content: '';
+  position: absolute;
+  width: 120px; height: 120px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 50%;
+  bottom: -40px; left: -20px;
+}
+
+.hero-emoji-big {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 8px;
+  animation: bounce 2.5s ease-in-out infinite;
+  position: relative;
+  z-index: 1;
+}
+@keyframes bounce {
+  0%,100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-10px) rotate(3deg); }
+}
+
+.hero-name {
+  font-family: 'Fredoka One', cursive;
+  font-size: 2.4rem;
+  color: white;
+  text-shadow: 0 3px 12px rgba(0,0,0,0.15);
+  position: relative;
+  z-index: 1;
+  line-height: 1.1;
+}
+
+.hero-tagline {
+  color: rgba(255,255,255,0.9);
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-top: 6px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-pills {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-pill {
+  background: rgba(255,255,255,0.3);
+  backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(255,255,255,0.5);
+  padding: 5px 14px;
+  border-radius: var(--r-full);
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: white;
+}
+
+/* Quick diary shortcuts */
+.quick-actions {
+  padding: 20px 16px 8px;
+}
+
+.qa-title {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text2);
+  margin-bottom: 12px;
+  padding-left: 4px;
+}
+
+.qa-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+
+.qa-btn {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 14px 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Nunito', sans-serif;
+  box-shadow: var(--shadow-sm);
+}
+
+.qa-btn:active { transform: scale(0.95); box-shadow: none; }
+
+.qa-icon { font-size: 1.8rem; display: block; margin-bottom: 4px; }
+.qa-label { font-size: 0.7rem; font-weight: 800; color: var(--text); line-height: 1.2; }
+
+.qa-btn:nth-child(1) { border-color: #FF6B6B44; background: #FF6B6B08; }
+.qa-btn:nth-child(2) { border-color: #6BCB7744; background: #6BCB7708; }
+.qa-btn:nth-child(3) { border-color: #4D96FF44; background: #4D96FF08; }
+
+/* Home section cards grid */
+.home-cards-section {
+  padding: 8px 16px 16px;
+}
+
+.home-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.home-card {
+  border-radius: var(--r-xl);
+  padding: 20px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border: none;
+  font-family: 'Nunito', sans-serif;
+  text-align: left;
+  box-shadow: var(--shadow-md);
+}
+
+.home-card:active { transform: scale(0.96); box-shadow: var(--shadow-sm); }
+
+.home-card.wide { grid-column: span 2; min-height: 100px; flex-direction: row; align-items: center; justify-content: flex-start; gap: 16px; }
+
+.hc-emoji {
+  font-size: 2.6rem;
+  display: block;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.home-card.wide .hc-emoji { font-size: 2.8rem; margin-bottom: 0; flex-shrink: 0; }
+
+.hc-content { position: relative; z-index: 1; }
+
+.hc-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.05rem;
+  color: white;
+  line-height: 1.2;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.15);
+}
+
+.hc-sub {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.85);
+  margin-top: 2px;
+}
+
+.home-card::before {
+  content: '';
+  position: absolute;
+  width: 100px; height: 100px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 50%;
+  top: -30px; right: -20px;
+  z-index: 0;
+}
+
+/* Card color themes */
+.card-orange { background: linear-gradient(135deg, #FF8C00, #FF6B35); }
+.card-green { background: linear-gradient(135deg, #11998e, #38ef7d); }
+.card-blue { background: linear-gradient(135deg, #4776E6, #8E54E9); }
+.card-pink { background: linear-gradient(135deg, #f953c6, #b91d73); }
+.card-teal { background: linear-gradient(135deg, #00b4db, #0083b0); }
+.card-yellow { background: linear-gradient(135deg, #f7971e, #ffd200); }
+.card-red { background: linear-gradient(135deg, #c0392b, #e74c3c); }
+.card-mint { background: linear-gradient(135deg, #56ab2f, #a8e063); }
+.card-grape { background: linear-gradient(135deg, #7b4397, #dc2430); }
+.card-coral { background: linear-gradient(135deg, #ff416c, #ff4b2b); }
+
+/* ══════════════════════════════════════════
+   SECTION HEADER (inside screens)
+══════════════════════════════════════════ */
+.section-topbar {
+  padding: 20px 20px 0;
+}
+
+.section-topbar h1 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.7rem;
+  line-height: 1.2;
+}
+
+.section-topbar p {
+  font-size: 0.85rem;
+  color: var(--text2);
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.section-body {
+  padding: 16px;
+}
+
+/* ══════════════════════════════════════════
+   INNER NAVIGATION (sub-screens in "More")
+══════════════════════════════════════════ */
+.more-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 16px;
+}
+
+.more-card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: 20px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  font-family: 'Nunito', sans-serif;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+
+.more-card:active { transform: scale(0.95); }
+
+.mc-icon {
+  width: 56px; height: 56px;
+  border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.7rem;
+}
+
+.mc-title { font-weight: 800; font-size: 0.9rem; color: var(--text); }
+.mc-sub { font-size: 0.72rem; color: var(--text2); font-weight: 600; }
+
+/* sub-section back button */
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px 4px;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: var(--text2);
+  font-family: 'Nunito', sans-serif;
+  background: none;
+  border: none;
+}
+.back-btn:active { opacity: 0.6; }
+
+/* ══════════════════════════════════════════
+   CARDS & CONTENT
+══════════════════════════════════════════ */
+.card {
+  background: var(--surface);
+  border-radius: var(--r-lg);
+  padding: 18px;
+  box-shadow: var(--shadow-sm);
+  border: 1.5px solid var(--border);
+  margin-bottom: 12px;
+}
+
+.card-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.1rem;
+  margin-bottom: 6px;
+}
+
+/* ══════════════════════════════════════════
+   DIARY FORMS
+══════════════════════════════════════════ */
+.form-card {
+  background: var(--surface);
+  border-radius: var(--r-xl);
+  padding: 20px;
+  box-shadow: var(--shadow-md);
+  border: 2px solid var(--border);
+  margin-bottom: 16px;
+}
+
+.form-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.2rem;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.field-label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text2);
+  margin-bottom: 6px;
+  margin-top: 14px;
+  display: block;
+}
+
+.field-label:first-child { margin-top: 0; }
+
+input[type="date"], input[type="time"], input[type="number"], input[type="text"], select, textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--bg);
+  outline: none;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+
+input:focus, select:focus, textarea:focus { border-color: var(--c5); background: white; }
+
+.time-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.rating-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.rating-btn {
+  padding: 10px 8px;
+  border: 2.5px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg);
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--text2);
+  text-align: center;
+  transition: all 0.15s;
+}
+.rating-btn:active { transform: scale(0.96); }
+.rating-btn.sel-bien { background: #6BCB7720; border-color: #6BCB77; color: #2d8a3e; }
+.rating-btn.sel-regular { background: #FFB34720; border-color: #FFB347; color: #a07020; }
+.rating-btn.sel-mal { background: #FF6B6B20; border-color: #FF6B6B; color: #c0392b; }
+
+.meal-block {
+  background: var(--bg);
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 10px;
+}
+
+.meal-name {
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text2);
+  margin-bottom: 8px;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 16px;
+  border-radius: var(--r-full);
+  border: none;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+  letter-spacing: 0.3px;
+}
+.btn-primary:active { transform: scale(0.97); opacity: 0.9; }
+.btn-save-diary { background: linear-gradient(135deg, #FF6B6B, #FF8E53); color: white; box-shadow: 0 4px 16px #FF6B6B44; }
+.btn-save-poop { background: linear-gradient(135deg, #56ab2f, #a8e063); color: white; box-shadow: 0 4px 16px #6BCB7744; }
+.btn-save-sleep { background: linear-gradient(135deg, #4776E6, #8E54E9); color: white; box-shadow: 0 4px 16px #4D96FF44; }
+.btn-save-weight { background: linear-gradient(135deg, #f7971e, #ffd200); color: white; box-shadow: 0 4px 16px #FFB34744; }
+
+/* Symptom chips */
+.symptom-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 8px;
+}
+
+.symptom-chip {
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: var(--r-full);
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Nunito', sans-serif;
+  color: var(--text2);
+}
+.symptom-chip.selected { background: #FF6B6B15; border-color: var(--c1); color: #c0392b; }
+
+/* Stats row */
+.stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.stat-card {
+  background: var(--surface);
+  border-radius: 18px;
+  padding: 14px 10px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  border: 1.5px solid var(--border);
+}
+
+.stat-num {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: var(--text2);
+  margin-top: 4px;
+}
+
+/* Month nav */
+.month-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.month-nav-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--bg);
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+  font-family: 'Nunito', sans-serif;
+}
+.month-nav-btn:active { transform: scale(0.92); }
+
+.month-nav-label {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+/* Records list */
+.record-item {
+  background: var(--surface);
+  border-radius: 18px;
+  padding: 14px;
+  margin-bottom: 10px;
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.ri-icon {
+  width: 44px; height: 44px;
+  border-radius: 14px;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.ri-content { flex: 1; }
+.ri-date { font-size: 0.72rem; font-weight: 800; color: var(--text2); text-transform: uppercase; letter-spacing: 0.3px; }
+.ri-main { font-weight: 700; font-size: 0.9rem; margin-top: 2px; }
+.ri-sub { font-size: 0.78rem; color: var(--text2); font-weight: 600; margin-top: 2px; }
+.ri-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: var(--r-full);
+  font-size: 0.68rem;
+  font-weight: 800;
+  margin-top: 6px;
+  margin-right: 4px;
+}
+
+.tag-bien { background: #6BCB7720; color: #2d8a3e; }
+.tag-regular { background: #FFB34720; color: #a07020; }
+.tag-mal { background: #FF6B6B20; color: #c0392b; }
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text2);
+}
+.empty-icon { font-size: 3rem; display: block; margin-bottom: 10px; }
+.empty-text { font-weight: 700; font-size: 0.9rem; }
+
+/* ══════════════════════════════════════════
+   POOP TYPES
+══════════════════════════════════════════ */
+.poop-types {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.poop-type-btn {
+  padding: 10px 6px;
+  border: 2.5px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg);
+  cursor: pointer;
+  text-align: center;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--text2);
+  transition: all 0.15s;
+  line-height: 1.3;
+}
+.poop-type-btn .pt-emoji { font-size: 1.4rem; display: block; margin-bottom: 3px; }
+.poop-type-btn:active { transform: scale(0.94); }
+.poop-type-btn.selected { background: #6BCB7718; border-color: #6BCB77; color: #2d8a3e; }
+
+/* ══════════════════════════════════════════
+   CONTENT SECTIONS (informativas)
+══════════════════════════════════════════ */
+.info-section { padding: 16px; }
+
+.content-card {
+  background: var(--surface);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow-sm);
+  border: 1.5px solid var(--border);
+}
+
+.content-card-header {
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.cch-icon {
+  width: 48px; height: 48px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.cch-text h3 { font-weight: 800; font-size: 0.95rem; }
+.cch-text p { font-size: 0.75rem; color: var(--text2); font-weight: 600; margin-top: 2px; }
+
+.cch-arrow {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: var(--text2);
+  transition: transform 0.2s;
+}
+
+.content-card-header.open .cch-arrow { transform: rotate(180deg); }
+
+.content-card-body {
+  display: none;
+  padding: 0 18px 18px;
+}
+.content-card-body.open { display: block; animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* Tabs inside content */
+.tab-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 0 8px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.tab-row::-webkit-scrollbar { display: none; }
+
+.tab-pill {
+  padding: 7px 16px;
+  border-radius: var(--r-full);
+  border: 2px solid var(--border);
+  background: var(--bg);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+  color: var(--text2);
+}
+.tab-pill.active { background: var(--text); color: white; border-color: var(--text); }
+
+/* week nav */
+.week-nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.week-nav-btn {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--bg);
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Nunito', sans-serif;
+}
+.week-nav-btn:active { transform: scale(0.92); }
+
+.week-label {
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.95rem;
+  text-align: center;
+  flex: 1;
+  padding: 0 8px;
+}
+
+/* day detail card */
+.day-card {
+  background: var(--surface);
+  border-radius: 18px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+.day-card.allergen-day { border-color: #FF8C0066; }
+
+.day-card-header {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+.dch-emoji { font-size: 1.6rem; flex-shrink: 0; }
+.dch-info { flex: 1; }
+.dch-day { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text2); }
+.dch-food { font-weight: 800; font-size: 0.95rem; }
+.dch-badge {
+  display: inline-block;
+  background: #FF8C0020;
+  color: #E07000;
+  border: 1.5px solid #FF8C0040;
+  padding: 2px 8px;
+  border-radius: var(--r-full);
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+.dch-arrow { font-size: 0.75rem; color: var(--text2); transition: transform 0.2s; flex-shrink: 0; }
+.day-card-header.open .dch-arrow { transform: rotate(180deg); }
+
+.day-card-body { display: none; padding: 0 16px 16px; }
+.day-card-body.open { display: block; animation: fadeIn 0.2s ease; }
+
+.prep-text { font-size: 0.83rem; color: var(--text); line-height: 1.6; margin-bottom: 12px; }
+
+.duo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.duo-box {
+  border-radius: 14px;
+  padding: 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.duo-box h5 { font-size: 0.72rem; font-weight: 800; margin-bottom: 4px; }
+.duo-blw { background: #4D96FF12; border: 1.5px solid #4D96FF30; color: #2a5db0; }
+.duo-blw h5 { color: #4776E6; }
+.duo-mixed { background: #6BCB7712; border: 1.5px solid #6BCB7730; color: #2d7a3a; }
+.duo-mixed h5 { color: #38a846; }
+
+/* Alert boxes */
+.alert-card {
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 0.83rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.alert-card.warning { background: #FFD93D18; border: 1.5px solid #FFD93D60; }
+.alert-card.danger { background: #FF6B6B12; border: 1.5px solid #FF6B6B50; }
+.alert-card.info { background: #4D96FF12; border: 1.5px solid #4D96FF50; }
+.alert-card.success { background: #6BCB7712; border: 1.5px solid #6BCB7750; }
+
+/* Table-style */
+.info-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+.info-table th { background: var(--bg); padding: 8px 10px; text-align: left; font-weight: 800; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.3px; color: var(--text2); }
+.info-table td { padding: 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.info-table tr:last-child td { border-bottom: none; }
+
+/* Weight chart */
+.chart-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 100px;
+  padding: 0 4px;
+  overflow-x: auto;
+}
+.chart-bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 2px; flex-shrink: 0; }
+.chart-bar { width: 28px; background: linear-gradient(180deg, var(--c5), #8E54E9); border-radius: 6px 6px 0 0; transition: height 0.4s ease; }
+.chart-bar-val { font-size: 0.6rem; font-weight: 800; color: var(--text2); }
+.chart-bar-label { font-size: 0.58rem; font-weight: 700; color: var(--text2); white-space: nowrap; }
+
+/* Sleep diary specific */
+.nap-block {
+  background: var(--bg);
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 8px;
+}
+.nap-label { font-size: 0.75rem; font-weight: 800; color: var(--text2); margin-bottom: 8px; }
+
+/* Wakeups selector */
+.wakeups-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+.wakeup-btn {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 2.5px solid var(--border);
+  background: var(--bg);
+  cursor: pointer;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1rem;
+  color: var(--text2);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.wakeup-btn.selected { background: #4D96FF15; border-color: var(--c5); color: #4776E6; }
+
+/* sleep quality */
+.quality-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 8px; }
+.quality-btn {
+  padding: 12px 8px;
+  border: 2.5px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg);
+  cursor: pointer;
+  text-align: center;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--text2);
+  transition: all 0.15s;
+}
+.quality-btn .qb-icon { font-size: 1.5rem; display: block; margin-bottom: 3px; }
+.quality-btn.sel-bien { background: #4D96FF15; border-color: var(--c5); color: #4776E6; }
+.quality-btn.sel-regular { background: #C77DFF15; border-color: var(--c6); color: #7b4cc7; }
+.quality-btn.sel-mal { background: #FF6B6B15; border-color: var(--c1); color: #c0392b; }
+
+/* Month tab pills for meses section */
+.month-pill-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 0 10px;
+  scrollbar-width: none;
+}
+.month-pill-row::-webkit-scrollbar { display: none; }
+
+/* intro blw cards */
+.blw-intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0; }
+.blw-intro-card {
+  background: var(--surface);
+  border-radius: 18px;
+  padding: 16px 12px;
+  text-align: center;
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+.bic-icon { font-size: 1.8rem; display: block; margin-bottom: 6px; }
+.bic-title { font-weight: 800; font-size: 0.85rem; margin-bottom: 4px; }
+.bic-desc { font-size: 0.72rem; color: var(--text2); font-weight: 600; line-height: 1.4; }
+
+/* allergen grid */
+.allergen-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+.allergen-chip {
+  padding: 6px 12px;
+  border-radius: var(--r-full);
+  font-size: 0.75rem;
+  font-weight: 800;
+  border: 1.5px solid;
+}
+
+/* recipe cards */
+.recipe-card {
+  background: var(--surface);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow-sm);
+  border: 1.5px solid var(--border);
+}
+.recipe-header {
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+}
+.rh-emoji { font-size: 2.2rem; }
+.rh-info { flex: 1; }
+.rh-title { font-weight: 800; font-size: 0.95rem; }
+.rh-meta { font-size: 0.72rem; color: var(--text2); font-weight: 700; margin-top: 2px; }
+.rh-arrow { color: var(--text2); transition: transform 0.2s; }
+.recipe-header.open .rh-arrow { transform: rotate(180deg); }
+.recipe-body { display: none; padding: 0 18px 18px; }
+.recipe-body.open { display: block; animation: fadeIn 0.2s ease; }
+
+/* stimulacion */
+.stim-card {
+  background: var(--surface);
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 10px;
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+.stim-cat-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.stim-cat-icon {
+  width: 44px; height: 44px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+.stim-cat-title { font-weight: 800; font-size: 0.95rem; }
+.exercise-item {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.83rem;
+  line-height: 1.6;
+}
+.exercise-item:last-child { border-bottom: none; padding-bottom: 0; }
+.exercise-item strong { font-weight: 800; color: var(--text); }
+
+/* sueño */
+.sleep-need-card {
+  background: var(--surface);
+  border-radius: 18px;
+  padding: 14px;
+  margin-bottom: 10px;
+  border: 1.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: var(--shadow-sm);
+}
+.snc-icon { font-size: 1.8rem; flex-shrink: 0; }
+.snc-info { flex: 1; }
+.snc-age { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; color: var(--text2); }
+.snc-hours { font-family: 'Fredoka One', cursive; font-size: 1.2rem; }
+.snc-detail { font-size: 0.78rem; color: var(--text2); font-weight: 600; }
+
+.sleep-sched { font-size: 0.82rem; line-height: 1.8; }
+.sleep-sched span { font-weight: 800; color: var(--c5); }
+
+/* consejos */
+.tip-card {
+  background: var(--surface);
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 10px;
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.tc-icon { font-size: 1.5rem; flex-shrink: 0; }
+.tc-content h4 { font-weight: 800; font-size: 0.9rem; margin-bottom: 4px; }
+.tc-content p { font-size: 0.82rem; color: var(--text2); font-weight: 600; line-height: 1.5; }
+
+/* Texture cards */
+.texture-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0; }
+.texture-box {
+  border-radius: 16px;
+  padding: 14px;
+}
+.texture-box h5 { font-size: 0.78rem; font-weight: 800; margin-bottom: 6px; }
+.texture-box p { font-size: 0.75rem; font-weight: 600; line-height: 1.4; color: var(--text2); }
+
+/* subsection header */
+.sub-header {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1rem;
+  margin: 18px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header class="app-header">
+  <div>
+    <div class="header-logo">🥕 Blanca BLW</div>
+    <div class="header-subtitle">Tu guía de alimentación complementaria</div>
+  </div>
+  <div class="header-right">👶</div>
+</header>
+
+<!-- ══ SCREENS ══ -->
+
+<!-- HOME -->
+<div id="screen-home" class="screen active">
+  <div class="home-hero">
+    <span class="hero-emoji-big">🥕</span>
+    <div class="hero-name">¡Hola, Blanca! 🌟</div>
+    <div class="hero-tagline">Tu aventura con la comida empieza aquí</div>
+    <div class="hero-pills">
+      <span class="hero-pill">6–12 meses</span>
+      <span class="hero-pill">BLW + Mixto</span>
+      <span class="hero-pill">Con ❤️</span>
+    </div>
+  </div>
+
+  <div class="quick-actions">
+    <div class="qa-title">⚡ Acceso rápido a diarios</div>
+    <div class="qa-row">
+      <button class="qa-btn" onclick="goTo('diario')">
+        <span class="qa-icon">🍽️</span>
+        <span class="qa-label">Diario<br>Comidas</span>
+      </button>
+      <button class="qa-btn" onclick="goTo('diariocacas')">
+        <span class="qa-icon">💩</span>
+        <span class="qa-label">Diario<br>Cacas</span>
+      </button>
+      <button class="qa-btn" onclick="goTo('diariosueño')">
+        <span class="qa-icon">🌙</span>
+        <span class="qa-label">Diario<br>Sueño</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="home-cards-section">
+    <div class="qa-title">📚 Guías y herramientas</div>
+    <div class="home-cards-grid">
+      <button class="home-card card-orange" onclick="openSubScreen('intro')">
+        <span class="hc-emoji">🥑</span>
+        <div class="hc-content">
+          <div class="hc-title">¿Qué es BLW?</div>
+          <div class="hc-sub">Guía completa</div>
+        </div>
+      </button>
+      <button class="home-card card-green" onclick="openSubScreen('meses')">
+        <span class="hc-emoji">📅</span>
+        <div class="hc-content">
+          <div class="hc-title">Por Meses</div>
+          <div class="hc-sub">6 a 12 meses</div>
+        </div>
+      </button>
+      <button class="home-card card-blue" onclick="openSubScreen('semanas')">
+        <span class="hc-emoji">🗓️</span>
+        <div class="hc-content">
+          <div class="hc-title">Plan Semanal</div>
+          <div class="hc-sub">12 semanas</div>
+        </div>
+      </button>
+      <button class="home-card card-yellow" onclick="openSubScreen('alergenos')">
+        <span class="hc-emoji">⚠️</span>
+        <div class="hc-content">
+          <div class="hc-title">Alérgenos</div>
+          <div class="hc-sub">Guía segura</div>
+        </div>
+      </button>
+      <button class="home-card card-teal wide" onclick="openSubScreen('recetas')">
+        <span class="hc-emoji">👨‍🍳</span>
+        <div class="hc-content">
+          <div class="hc-title">Recetas BLW</div>
+          <div class="hc-sub">Para BLW puro y mixto</div>
+        </div>
+      </button>
+      <button class="home-card card-mint" onclick="openSubScreen('texturas')">
+        <span class="hc-emoji">🎨</span>
+        <div class="hc-content">
+          <div class="hc-title">Texturas</div>
+          <div class="hc-sub">Por etapa</div>
+        </div>
+      </button>
+      <button class="home-card card-grape" onclick="openSubScreen('sueno')">
+        <span class="hc-emoji">😴</span>
+        <div class="hc-content">
+          <div class="hc-title">Sueño</div>
+          <div class="hc-sub">Guía y rutinas</div>
+        </div>
+      </button>
+      <button class="home-card card-coral wide" onclick="openSubScreen('estimulacion')">
+        <span class="hc-emoji">🧠</span>
+        <div class="hc-content">
+          <div class="hc-title">Estimulación</div>
+          <div class="hc-sub">Motor, lenguaje y más</div>
+        </div>
+      </button>
+      <button class="home-card card-pink wide" onclick="openSubScreen('consejos')">
+        <span class="hc-emoji">💡</span>
+        <div class="hc-content">
+          <div class="hc-title">Consejos y Seguridad</div>
+          <div class="hc-sub">Atragantamiento, primeros pasos</div>
+        </div>
+      </button>
+      <button class="home-card card-red" onclick="goTo('peso')">
+        <span class="hc-emoji">⚖️</span>
+        <div class="hc-content">
+          <div class="hc-title">Peso</div>
+          <div class="hc-sub">Registro</div>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- DIARIO COMIDAS -->
+<div id="screen-diario" class="screen">
+  <div class="section-topbar">
+    <h1>🍽️ Diario de Comidas</h1>
+    <p>Registra qué come Blanca cada día</p>
+  </div>
+  <div class="section-body">
+    <div class="form-card">
+      <div class="form-title">➕ Nuevo registro</div>
+      <label class="field-label">📅 Fecha</label>
+      <input type="date" id="diaryDate">
+
+      <div id="mealBlocks">
+        <!-- Desayuno -->
+        <div class="meal-block">
+          <div class="meal-name">🌅 Desayuno</div>
+          <input type="text" id="diaryBreakfastFood" placeholder="¿Qué comió? ej: tortita de plátano">
+          <div class="rating-row">
+            <button class="rating-btn" onclick="setMealRating('breakfast','bien',this)">😄 Bien</button>
+            <button class="rating-btn" onclick="setMealRating('breakfast','regular',this)">😐 Regular</button>
+            <button class="rating-btn" onclick="setMealRating('breakfast','mal',this)">😕 Mal</button>
+          </div>
+        </div>
+        <!-- Almuerzo -->
+        <div class="meal-block">
+          <div class="meal-name">☀️ Almuerzo</div>
+          <input type="text" id="diaryLunchFood" placeholder="¿Qué comió? ej: bastones zanahoria">
+          <div class="rating-row">
+            <button class="rating-btn" onclick="setMealRating('lunch','bien',this)">😄 Bien</button>
+            <button class="rating-btn" onclick="setMealRating('lunch','regular',this)">😐 Regular</button>
+            <button class="rating-btn" onclick="setMealRating('lunch','mal',this)">😕 Mal</button>
+          </div>
+        </div>
+        <!-- Merienda -->
+        <div class="meal-block">
+          <div class="meal-name">🌇 Merienda</div>
+          <input type="text" id="diarySnackFood" placeholder="¿Qué comió? ej: pera, plátano">
+          <div class="rating-row">
+            <button class="rating-btn" onclick="setMealRating('snack','bien',this)">😄 Bien</button>
+            <button class="rating-btn" onclick="setMealRating('snack','regular',this)">😐 Regular</button>
+            <button class="rating-btn" onclick="setMealRating('snack','mal',this)">😕 Mal</button>
+          </div>
+        </div>
+        <!-- Cena -->
+        <div class="meal-block">
+          <div class="meal-name">🌙 Cena</div>
+          <input type="text" id="diaryDinnerFood" placeholder="¿Qué comió? ej: puré boniato">
+          <div class="rating-row">
+            <button class="rating-btn" onclick="setMealRating('dinner','bien',this)">😄 Bien</button>
+            <button class="rating-btn" onclick="setMealRating('dinner','regular',this)">😐 Regular</button>
+            <button class="rating-btn" onclick="setMealRating('dinner','mal',this)">😕 Mal</button>
+          </div>
+        </div>
+      </div>
+
+      <label class="field-label">🚨 Síntomas observados</label>
+      <div class="symptom-grid" id="symptomGrid">
+        <span class="symptom-chip" data-sym="Ninguno" onclick="toggleSymptom(this)">✅ Ninguno</span>
+        <span class="symptom-chip" data-sym="Urticaria" onclick="toggleSymptom(this)">🔴 Urticaria</span>
+        <span class="symptom-chip" data-sym="Vómito" onclick="toggleSymptom(this)">🤢 Vómito</span>
+        <span class="symptom-chip" data-sym="Diarrea" onclick="toggleSymptom(this)">💧 Diarrea</span>
+        <span class="symptom-chip" data-sym="Hinchazón" onclick="toggleSymptom(this)">🎈 Hinchazón</span>
+        <span class="symptom-chip" data-sym="Eccema" onclick="toggleSymptom(this)">🌡️ Eccema</span>
+        <span class="symptom-chip" data-sym="Estreñimiento" onclick="toggleSymptom(this)">🪨 Estreñimiento</span>
+        <span class="symptom-chip" data-sym="Gases" onclick="toggleSymptom(this)">💨 Gases</span>
+        <span class="symptom-chip" data-sym="Rechazo" onclick="toggleSymptom(this)">🙅 Rechazo</span>
+        <span class="symptom-chip" data-sym="Llanto" onclick="toggleSymptom(this)">😭 Llanto</span>
+      </div>
+
+      <label class="field-label">📝 Notas</label>
+      <textarea id="diaryNotes" rows="2" placeholder="Nuevo alimento, reacción especial, humor..."></textarea>
+
+      <button class="btn-primary btn-save-diary" onclick="saveDiaryEntry()">💾 Guardar registro</button>
+    </div>
+
+    <div class="month-nav">
+      <button class="month-nav-btn" onclick="changeDiaryMonth(-1)">◀</button>
+      <span class="month-nav-label" id="diaryMonthLabel"></span>
+      <button class="month-nav-btn" onclick="changeDiaryMonth(1)">▶</button>
+    </div>
+
+    <div id="diaryList"></div>
+  </div>
+</div>
+
+<!-- DIARIO CACAS -->
+<div id="screen-diariocacas" class="screen">
+  <div class="section-topbar">
+    <h1>💩 Diario de Cacas</h1>
+    <p>Seguimiento de deposiciones de Blanca</p>
+  </div>
+  <div class="section-body">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num" id="poopTotal" style="color:var(--c4)">0</div>
+        <div class="stat-label">Total</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="poopThisWeek" style="color:var(--c2)">0</div>
+        <div class="stat-label">Esta semana</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="poopAvg" style="font-size:1.6rem">💩</div>
+        <div class="stat-label">Más frecuente</div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-title">➕ Nueva caca</div>
+      <div class="time-row">
+        <div>
+          <label class="field-label">📅 Fecha</label>
+          <input type="date" id="poopDate">
+        </div>
+        <div>
+          <label class="field-label">🕐 Hora</label>
+          <input type="time" id="poopTime">
+        </div>
+      </div>
+      <label class="field-label">💩 Tipo</label>
+      <div class="poop-types">
+        <button class="poop-type-btn" onclick="selectPoopType(this,'Dura/bolitas')"><span class="pt-emoji">🪨</span>Dura / bolitas</button>
+        <button class="poop-type-btn" onclick="selectPoopType(this,'Normal/formada')"><span class="pt-emoji">🍌</span>Normal / formada</button>
+        <button class="poop-type-btn" onclick="selectPoopType(this,'Blanda/pastosa')"><span class="pt-emoji">🥜</span>Blanda / pastosa</button>
+        <button class="poop-type-btn" onclick="selectPoopType(this,'Líquida/diarrea')"><span class="pt-emoji">💧</span>Líquida / diarrea</button>
+        <button class="poop-type-btn" onclick="selectPoopType(this,'Con restos de comida')"><span class="pt-emoji">🥕</span>Con restos</button>
+        <button class="poop-type-btn" onclick="selectPoopType(this,'Mucosa')"><span class="pt-emoji">🫧</span>Mucosa</button>
+      </div>
+      <label class="field-label">🎨 Color</label>
+      <select id="poopColor">
+        <option>Amarillo mostaza</option>
+        <option>Marrón claro</option>
+        <option>Marrón oscuro</option>
+        <option>Verde</option>
+        <option>Naranja</option>
+        <option>Negra (alquitranada)</option>
+        <option>Con sangre</option>
+        <option>Blanca/grisácea</option>
+      </select>
+      <label class="field-label">📏 Cantidad</label>
+      <select id="poopAmount">
+        <option>Poca</option>
+        <option>Normal</option>
+        <option>Mucha</option>
+      </select>
+      <label class="field-label">📝 Notas</label>
+      <input type="text" id="poopNote" placeholder="Último alimento introducido, gases, llanto...">
+      <button class="btn-primary btn-save-poop" onclick="savePoop()">💾 Guardar</button>
+    </div>
+
+    <div class="month-nav">
+      <button class="month-nav-btn" onclick="changePoopMonth(-1)">◀</button>
+      <span class="month-nav-label" id="poopMonthLabel"></span>
+      <button class="month-nav-btn" onclick="changePoopMonth(1)">▶</button>
+    </div>
+
+    <div id="poopList"></div>
+  </div>
+</div>
+
+<!-- DIARIO SUEÑO -->
+<div id="screen-diariosueño" class="screen">
+  <div class="section-topbar">
+    <h1>🌙 Diario de Sueño</h1>
+    <p>Seguimiento del descanso de Blanca</p>
+  </div>
+  <div class="section-body">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num" id="sleepTotal" style="color:var(--c5)">0</div>
+        <div class="stat-label">Días</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="sleepGood" style="color:var(--c4)">0</div>
+        <div class="stat-label">😴 Bien</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="sleepAvgWake" style="color:var(--c6)">-</div>
+        <div class="stat-label">Despertares</div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-title">➕ Registrar noche</div>
+      <label class="field-label">📅 Fecha</label>
+      <input type="date" id="sleepDate">
+
+      <label class="field-label">🌙 Sueño nocturno</label>
+      <div class="time-row">
+        <div>
+          <label class="field-label" style="margin-top:6px">Inicio</label>
+          <input type="time" id="nightStart" placeholder="21:30">
+        </div>
+        <div>
+          <label class="field-label" style="margin-top:6px">Fin</label>
+          <input type="time" id="nightEnd" placeholder="07:00">
+        </div>
+      </div>
+
+      <label class="field-label">😅 Despertares nocturnos</label>
+      <div class="wakeups-row" id="wakeupsRow">
+        <button class="wakeup-btn" onclick="selectWakeups(0,this)">0</button>
+        <button class="wakeup-btn" onclick="selectWakeups(1,this)">1</button>
+        <button class="wakeup-btn" onclick="selectWakeups(2,this)">2</button>
+        <button class="wakeup-btn" onclick="selectWakeups(3,this)">3</button>
+        <button class="wakeup-btn" onclick="selectWakeups(4,this)">4</button>
+        <button class="wakeup-btn" onclick="selectWakeups(5,this)">5+</button>
+      </div>
+
+      <label class="field-label">☀️ Siestas</label>
+      <div class="nap-block">
+        <div class="nap-label">Siesta 1</div>
+        <div class="time-row">
+          <input type="time" id="nap1Start" placeholder="09:30">
+          <input type="time" id="nap1End" placeholder="10:30">
+        </div>
+      </div>
+      <div class="nap-block">
+        <div class="nap-label">Siesta 2</div>
+        <div class="time-row">
+          <input type="time" id="nap2Start" placeholder="14:00">
+          <input type="time" id="nap2End" placeholder="15:30">
+        </div>
+      </div>
+      <div class="nap-block">
+        <div class="nap-label">Siesta 3</div>
+        <div class="time-row">
+          <input type="time" id="nap3Start" placeholder="17:00">
+          <input type="time" id="nap3End" placeholder="17:45">
+        </div>
+      </div>
+
+      <label class="field-label">⭐ Calidad del sueño</label>
+      <div class="quality-row">
+        <button class="quality-btn" onclick="selectSleepQuality('bien',this)"><span class="qb-icon">😴</span>Bien</button>
+        <button class="quality-btn" onclick="selectSleepQuality('regular',this)"><span class="qb-icon">😐</span>Regular</button>
+        <button class="quality-btn" onclick="selectSleepQuality('mal',this)"><span class="qb-icon">😫</span>Difícil</button>
+      </div>
+
+      <label class="field-label">📝 Notas</label>
+      <textarea id="sleepNotes" rows="2" placeholder="Dentición, fiebre, regresión, viaje..."></textarea>
+
+      <button class="btn-primary btn-save-sleep" onclick="saveSleepEntry()">💾 Guardar</button>
+    </div>
+
+    <div class="month-nav">
+      <button class="month-nav-btn" onclick="changeSleepMonth(-1)">◀</button>
+      <span class="month-nav-label" id="sleepMonthLabel"></span>
+      <button class="month-nav-btn" onclick="changeSleepMonth(1)">▶</button>
+    </div>
+
+    <div id="sleepList"></div>
+  </div>
+</div>
+
+<!-- MÁS (hub) -->
+<div id="screen-more" class="screen">
+  <div id="more-hub">
+    <div class="section-topbar" style="padding-bottom:12px">
+      <h1>📚 Guías</h1>
+      <p>Toda la información de Blanca</p>
+    </div>
+    <div class="more-grid">
+      <button class="more-card" onclick="openSubScreen('intro')">
+        <div class="mc-icon" style="background:#FFB34720">🥑</div>
+        <div class="mc-title">¿Qué es BLW?</div>
+        <div class="mc-sub">BLW puro y mixto</div>
+      </button>
+      <button class="more-card" onclick="openSubScreen('meses')">
+        <div class="mc-icon" style="background:#6BCB7720">📅</div>
+        <div class="mc-title">Por Meses</div>
+        <div class="mc-sub">6 a 12 meses</div>
+      </button>
+      <button class="more-card" onclick="openSubScreen('semanas')">
+        <div class="mc-icon" style="background:#4D96FF20">🗓️</div>
+        <div class="mc-title">Plan Semanal</div>
+        <div class="mc-sub">12 semanas detalladas</div>
+      </button>
+      <button class="more-card" onclick="openSubScreen('alergenos')">
+        <div class="mc-icon" style="background:#FFD93D20">⚠️</div>
+        <div class="mc-title">Alérgenos</div>
+        <div class="mc-sub">Introducción segura</div>
+      </button>
+      <button class="more-card" onclick="openSubScreen('texturas')">
+        <div class="mc-icon" style="background:#6BCB7720">🎨</div>
+        <div class="mc-title">Texturas</div>
+        <div class="mc-sub">Por etapa de edad</div>
+      </button>
+      <button class="more-card" onclick="openSubScreen('recetas')">
+        <div class="mc-icon" style="background:#FF6B6B20">👨‍🍳</div>
+        <div class="mc-title">Recetas</div>
+        <div class="mc-sub">BLW puro y mixto</div>
+      </button>
+      <button class="more-card" onclick="openSubScreen('consejos')">
+        <div class="mc-icon" style="background:#FFB34720">💡</div>
+        <div class="mc-title">Consejos</div>
+        <div class="mc-sub">Seguridad y trucos</div>
+      </button>
+      <button class="more-card" onclick="openSubScreen('sueno')">
+        <div class="mc-icon" style="background:#4D96FF20">😴</div>
+        <div class="mc-title">Sueño</div>
+        <div class="mc-sub">Guía y rutinas</div>
+      </button>
+      <button class="more-card" onclick="openSubScreen('estimulacion')">
+        <div class="mc-icon" style="background:#C77DFF20">🧠</div>
+        <div class="mc-title">Estimulación</div>
+        <div class="mc-sub">Ejercicios por área</div>
+      </button>
+      <button class="more-card" onclick="goTo('peso')">
+        <div class="mc-icon" style="background:#FF6B6B20">⚖️</div>
+        <div class="mc-title">Peso</div>
+        <div class="mc-sub">Registro de crecimiento</div>
+      </button>
+    </div>
+  </div>
+  <!-- Sub-screens go here dynamically -->
+  <div id="sub-screen-container" style="display:none"></div>
+</div>
+
+<!-- PESO -->
+<div id="screen-peso" class="screen">
+  <button class="back-btn" onclick="goTo('home')">← Volver</button>
+  <div class="section-topbar">
+    <h1>⚖️ Registro de Peso</h1>
+    <p>Seguimiento del crecimiento de Blanca</p>
+  </div>
+  <div class="section-body">
+    <div class="form-card">
+      <div class="form-title">➕ Nueva medición</div>
+      <div class="time-row">
+        <div><label class="field-label">📅 Fecha</label><input type="date" id="weightDate"></div>
+        <div><label class="field-label">⚖️ Peso (kg)</label><input type="number" id="weightKg" step="0.01" min="3" max="20" placeholder="7.50"></div>
+      </div>
+      <div class="time-row">
+        <div><label class="field-label">📏 Talla (cm)</label><input type="number" id="weightCm" step="0.1" min="40" max="100" placeholder="68"></div>
+        <div><label class="field-label">🧠 Perímetro craneal</label><input type="number" id="weightPc" step="0.1" min="30" max="55" placeholder="42"></div>
+      </div>
+      <label class="field-label">📍 Dónde se pesó</label>
+      <select id="weightWhere"><option>Pediatra</option><option>Farmacia</option><option>Casa</option></select>
+      <label class="field-label">📝 Notas</label>
+      <input type="text" id="weightNote" placeholder="Vacunas, revisión...">
+      <button class="btn-primary btn-save-weight" onclick="saveWeight()">💾 Guardar medición</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📈 Evolución del peso</div>
+      <div class="chart-bars" id="weightChart">
+        <div class="empty-state" style="width:100%"><span class="empty-icon">📊</span><span class="empty-text">Añade mediciones para ver la gráfica</span></div>
+      </div>
+    </div>
+
+    <div id="weightList">
+      <div class="empty-state"><span class="empty-icon">⚖️</span><span class="empty-text">Sin registros todavía</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ BOTTOM NAV ══ -->
+<nav class="bottom-nav">
+  <button class="nav-item active" data-nav="home" onclick="goTo('home')">
+    <div class="nav-icon">🏠</div>
+    <span class="nav-label">Inicio</span>
+  </button>
+  <button class="nav-item" data-nav="diario" onclick="goTo('diario')">
+    <div class="nav-icon">🍽️</div>
+    <span class="nav-label">Comidas</span>
+  </button>
+  <button class="nav-item" data-nav="diariocacas" onclick="goTo('diariocacas')">
+    <div class="nav-icon">💩</div>
+    <span class="nav-label">Cacas</span>
+  </button>
+  <button class="nav-item" data-nav="diariosueño" onclick="goTo('diariosueño')">
+    <div class="nav-icon">🌙</div>
+    <span class="nav-label">Sueño</span>
+  </button>
+  <button class="nav-item" data-nav="more" onclick="goTo('more')">
+    <div class="nav-icon">📚</div>
+    <span class="nav-label">Guías</span>
+  </button>
+</nav>
+
+<script>
+// ══════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════
+const SCREENS = ['home','diario','diariocacas','diariosueño','more','peso'];
+
+function goTo(id) {
+  SCREENS.forEach(s => {
+    const el = document.getElementById('screen-'+s);
+    if (el) el.classList.remove('active');
+  });
+  const target = document.getElementById('screen-'+id);
+  if (target) target.classList.add('active');
+
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  const navTarget = document.querySelector(`.nav-item[data-nav="${id}"]`);
+  if (navTarget) navTarget.classList.add('active');
+  else {
+    // peso maps to home in nav
+    const homeNav = document.querySelector('.nav-item[data-nav="home"]');
+    if (homeNav) homeNav.classList.add('active');
+  }
+  // Reset more hub when going to more
+  if (id === 'more') {
+    document.getElementById('more-hub').style.display = '';
+    document.getElementById('sub-screen-container').style.display = 'none';
+    document.getElementById('sub-screen-container').innerHTML = '';
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Sub-screens within "more" (or triggered from home)
+function openSubScreen(id) {
+  // Show the more tab
+  SCREENS.forEach(s => {
+    const el = document.getElementById('screen-'+s);
+    if (el) el.classList.remove('active');
+  });
+  document.getElementById('screen-more').classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.querySelector('.nav-item[data-nav="more"]').classList.add('active');
+
+  // Hide hub, show sub
+  document.getElementById('more-hub').style.display = 'none';
+  const container = document.getElementById('sub-screen-container');
+  container.style.display = '';
+  container.innerHTML = buildSubScreen(id);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Trigger renders
+  if (id === 'semanas') renderWeek();
+  if (id === 'meses') {}
+}
+
+function backToMoreHub() {
+  document.getElementById('more-hub').style.display = '';
+  document.getElementById('sub-screen-container').style.display = 'none';
+  document.getElementById('sub-screen-container').innerHTML = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function buildSubScreen(id) {
+  const screens = {
+    intro: buildIntro,
+    meses: buildMeses,
+    semanas: buildSemanas,
+    alergenos: buildAlergenos,
+    texturas: buildTexturas,
+    recetas: buildRecetas,
+    consejos: buildConsejos,
+    sueno: buildSueno,
+    estimulacion: buildEstimulacion
+  };
+  const fn = screens[id];
+  return fn ? fn() : `<button class="back-btn" onclick="backToMoreHub()">← Volver</button><div class="section-body"><p>Sección en construcción</p></div>`;
+}
+
+// ══════════════════════════════════════════
+// STORAGE HELPERS
+// ══════════════════════════════════════════
+function load(key) { try { return JSON.parse(localStorage.getItem(key)) || []; } catch { return []; } }
+function save(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch {} }
+function loadObj(key) { try { return JSON.parse(localStorage.getItem(key)) || {}; } catch { return {}; } }
+function saveObj(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch {} }
+function formatDate(d){if(!d)return'';const[y,m,day]=d.split('-');return`${day}/${m}/${y}`;}
+const MONTHS=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+// ══════════════════════════════════════════
+// DIARY (COMIDAS)
+// ══════════════════════════════════════════
+let diaryMealRatings = { breakfast: null, lunch: null, snack: null, dinner: null };
+let selectedSymptoms = [];
+let diaryCurrentMonth = new Date();
+
+function setMealRating(meal, rating, btn) {
+  diaryMealRatings[meal] = rating;
+  const parent = btn.parentElement;
+  parent.querySelectorAll('button').forEach(b => { b.className = 'rating-btn'; });
+  btn.className = `rating-btn sel-${rating}`;
+}
+
+function toggleSymptom(el) {
+  el.classList.toggle('selected');
+  const sym = el.dataset.sym;
+  if (el.classList.contains('selected')) { if (!selectedSymptoms.includes(sym)) selectedSymptoms.push(sym); }
+  else { selectedSymptoms = selectedSymptoms.filter(s => s !== sym); }
+}
+
+function saveDiaryEntry() {
+  const date = document.getElementById('diaryDate').value;
+  if (!date) { alert('Selecciona la fecha'); return; }
+  const entry = {
+    date,
+    meals: {
+      breakfast: { food: document.getElementById('diaryBreakfastFood').value, rating: diaryMealRatings.breakfast },
+      lunch: { food: document.getElementById('diaryLunchFood').value, rating: diaryMealRatings.lunch },
+      snack: { food: document.getElementById('diarySnackFood').value, rating: diaryMealRatings.snack },
+      dinner: { food: document.getElementById('diaryDinnerFood').value, rating: diaryMealRatings.dinner }
+    },
+    symptoms: [...selectedSymptoms],
+    notes: document.getElementById('diaryNotes').value
+  };
+  const data = loadObj('blw_diary_v2');
+  data[date] = entry;
+  saveObj('blw_diary_v2', data);
+  ['diaryBreakfastFood','diaryLunchFood','diarySnackFood','diaryDinnerFood','diaryNotes'].forEach(id => document.getElementById(id).value = '');
+  diaryMealRatings = { breakfast: null, lunch: null, snack: null, dinner: null };
+  selectedSymptoms = [];
+  document.querySelectorAll('#screen-diario .symptom-chip').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('#screen-diario .rating-btn').forEach(b => b.className = 'rating-btn');
+  renderDiary();
+  alert('✅ Registro guardado');
+}
+
+function renderDiary() {
+  const y = diaryCurrentMonth.getFullYear(), m = diaryCurrentMonth.getMonth();
+  document.getElementById('diaryMonthLabel').textContent = `${MONTHS[m]} ${y}`;
+  const data = loadObj('blw_diary_v2');
+  const monthKey = `${y}-${String(m+1).padStart(2,'0')}`;
+  const entries = Object.entries(data).filter(([k]) => k.startsWith(monthKey)).sort((a,b) => b[0].localeCompare(a[0]));
+  const list = document.getElementById('diaryList');
+  if (!entries.length) { list.innerHTML = '<div class="empty-state"><span class="empty-icon">🍽️</span><span class="empty-text">Sin registros este mes</span></div>'; return; }
+  const mealEmoji = {breakfast:'🌅',lunch:'☀️',snack:'🌇',dinner:'🌙'};
+  list.innerHTML = entries.map(([date, e]) => {
+    const meals = Object.entries(e.meals||{}).filter(([,v]) => v.food).map(([k,v]) =>
+      `<span class="ri-tag ${v.rating ? 'tag-'+v.rating : ''}">${mealEmoji[k]} ${v.food.substring(0,25)}${v.rating?' '+{bien:'😄',regular:'😐',mal:'😕'}[v.rating]:''}</span>`
+    ).join('');
+    const syms = e.symptoms && e.symptoms.length && !e.symptoms.includes('Ninguno') ? `<div style="margin-top:4px;font-size:0.75rem;color:#c0392b;font-weight:700;">⚠️ ${e.symptoms.join(' · ')}</div>` : '';
+    return `<div class="record-item">
+      <div class="ri-icon">🍽️</div>
+      <div class="ri-content">
+        <div class="ri-date">${formatDate(date)}</div>
+        <div style="flex-wrap:wrap;display:flex;gap:4px;margin-top:4px;">${meals}</div>
+        ${syms}
+        ${e.notes?`<div class="ri-sub" style="margin-top:4px;">📝 ${e.notes}</div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function changeDiaryMonth(dir) {
+  diaryCurrentMonth.setMonth(diaryCurrentMonth.getMonth() + dir);
+  renderDiary();
+}
+
+// ══════════════════════════════════════════
+// POOP DIARY
+// ══════════════════════════════════════════
+let selectedPoopType = null;
+let poopCurrentMonth = new Date();
+
+function selectPoopType(el, type) {
+  document.querySelectorAll('.poop-type-btn').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected'); selectedPoopType = type;
+}
+
+function savePoop() {
+  const date = document.getElementById('poopDate').value;
+  if (!date) { alert('Pon la fecha'); return; }
+  if (!selectedPoopType) { alert('Elige el tipo de caca'); return; }
+  const records = load('blw_poop');
+  records.push({ date, time: document.getElementById('poopTime').value||'', type: selectedPoopType, color: document.getElementById('poopColor').value, amount: document.getElementById('poopAmount').value, note: document.getElementById('poopNote').value });
+  records.sort((a,b) => (a.date+a.time).localeCompare(b.date+b.time));
+  save('blw_poop', records);
+  document.getElementById('poopNote').value = '';
+  document.getElementById('poopTime').value = '';
+  document.querySelectorAll('.poop-type-btn').forEach(p => p.classList.remove('selected'));
+  selectedPoopType = null;
+  renderPoop();
+  alert('✅ Guardado');
+}
+
+const POOP_EMOJI = {'Dura/bolitas':'🪨','Normal/formada':'🍌','Blanda/pastosa':'🥜','Líquida/diarrea':'💧','Con restos de comida':'🥕','Mucosa':'🫧'};
+
+function renderPoop() {
+  const records = load('blw_poop');
+  document.getElementById('poopTotal').textContent = records.length;
+  const weekAgo = new Date(Date.now()-7*864e5).toISOString().slice(0,10);
+  document.getElementById('poopThisWeek').textContent = records.filter(r => r.date >= weekAgo).length;
+  if (records.length) {
+    const freq = {};
+    records.forEach(r => freq[r.type] = (freq[r.type]||0)+1);
+    const top = Object.entries(freq).sort((a,b) => b[1]-a[1])[0];
+    document.getElementById('poopAvg').textContent = POOP_EMOJI[top[0]]||'💩';
+  }
+  const y = poopCurrentMonth.getFullYear(), m = poopCurrentMonth.getMonth();
+  document.getElementById('poopMonthLabel').textContent = `${MONTHS[m]} ${y}`;
+  const monthKey = `${y}-${String(m+1).padStart(2,'0')}`;
+  const monthRecords = [...records].filter(r => r.date.startsWith(monthKey)).reverse();
+  const list = document.getElementById('poopList');
+  if (!monthRecords.length) { list.innerHTML = '<div class="empty-state"><span class="empty-icon">💩</span><span class="empty-text">Sin registros este mes</span></div>'; return; }
+  list.innerHTML = monthRecords.map(r => `
+    <div class="record-item">
+      <div class="ri-icon">${POOP_EMOJI[r.type]||'💩'}</div>
+      <div class="ri-content">
+        <div class="ri-date">${formatDate(r.date)}${r.time?' · '+r.time:''}</div>
+        <div class="ri-main">${r.type}</div>
+        <div class="ri-sub">Color: ${r.color} · Cantidad: ${r.amount}${r.note?' · '+r.note:''}</div>
+      </div>
+    </div>`).join('');
+}
+
+function changePoopMonth(dir) {
+  poopCurrentMonth.setMonth(poopCurrentMonth.getMonth() + dir);
+  renderPoop();
+}
+
+// ══════════════════════════════════════════
+// SLEEP DIARY
+// ══════════════════════════════════════════
+let selectedSleepQuality = null;
+let selectedWakeups = null;
+let sleepCurrentMonth = new Date();
+
+function selectWakeups(n, btn) {
+  selectedWakeups = n;
+  document.querySelectorAll('.wakeup-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function selectSleepQuality(q, btn) {
+  selectedSleepQuality = q;
+  document.querySelectorAll('.quality-btn').forEach(b => { b.className = 'quality-btn'; });
+  btn.className = `quality-btn sel-${q}`;
+}
+
+function saveSleepEntry() {
+  const date = document.getElementById('sleepDate').value;
+  if (!date) { alert('Selecciona la fecha'); return; }
+  const entry = {
+    date,
+    nightStart: document.getElementById('nightStart').value,
+    nightEnd: document.getElementById('nightEnd').value,
+    wakeups: selectedWakeups !== null ? selectedWakeups : '?',
+    naps: [
+      { start: document.getElementById('nap1Start').value, end: document.getElementById('nap1End').value },
+      { start: document.getElementById('nap2Start').value, end: document.getElementById('nap2End').value },
+      { start: document.getElementById('nap3Start').value, end: document.getElementById('nap3End').value }
+    ].filter(n => n.start),
+    quality: selectedSleepQuality,
+    notes: document.getElementById('sleepNotes').value
+  };
+  const data = loadObj('blw_sleep');
+  data[date] = entry;
+  saveObj('blw_sleep', data);
+  ['nightStart','nightEnd','sleepNotes','nap1Start','nap1End','nap2Start','nap2End','nap3Start','nap3End'].forEach(id => document.getElementById(id).value = '');
+  selectedSleepQuality = null;
+  selectedWakeups = null;
+  document.querySelectorAll('.quality-btn').forEach(b => b.className = 'quality-btn');
+  document.querySelectorAll('.wakeup-btn').forEach(b => b.classList.remove('selected'));
+  renderSleepDiary();
+  alert('✅ Guardado');
+}
+
+function renderSleepDiary() {
+  const data = loadObj('blw_sleep');
+  const all = Object.values(data);
+  document.getElementById('sleepTotal').textContent = all.length;
+  document.getElementById('sleepGood').textContent = all.filter(v => v.quality === 'bien').length;
+  if (all.length) {
+    const avg = Math.round(all.reduce((s,v) => s + parseInt(v.wakeups||0), 0) / all.length * 10) / 10;
+    document.getElementById('sleepAvgWake').textContent = avg;
+  }
+  const y = sleepCurrentMonth.getFullYear(), m = sleepCurrentMonth.getMonth();
+  document.getElementById('sleepMonthLabel').textContent = `${MONTHS[m]} ${y}`;
+  const monthKey = `${y}-${String(m+1).padStart(2,'0')}`;
+  const entries = Object.entries(data).filter(([k]) => k.startsWith(monthKey)).sort((a,b) => b[0].localeCompare(a[0]));
+  const list = document.getElementById('sleepList');
+  if (!entries.length) { list.innerHTML = '<div class="empty-state"><span class="empty-icon">😴</span><span class="empty-text">Sin registros este mes</span></div>'; return; }
+  const qIcon = { bien: '😴', regular: '😐', mal: '😫' };
+  const qColor = { bien: 'tag-bien', regular: 'tag-regular', mal: 'tag-mal' };
+  list.innerHTML = entries.map(([date, e]) => {
+    const napText = e.naps && e.naps.length ? e.naps.map((n,i) => `Siesta ${i+1}: ${n.start}–${n.end}`).join(' · ') : 'Sin siestas';
+    return `<div class="record-item">
+      <div class="ri-icon">${qIcon[e.quality]||'🌙'}</div>
+      <div class="ri-content">
+        <div class="ri-date">${formatDate(date)}</div>
+        <div class="ri-main">Noche: ${e.nightStart||'?'}–${e.nightEnd||'?'} · ${e.wakeups} despertar(es)</div>
+        <div class="ri-sub">${napText}</div>
+        ${e.notes?`<div class="ri-sub">📝 ${e.notes}</div>`:''}
+        ${e.quality?`<span class="ri-tag ${qColor[e.quality]||''}">${e.quality.charAt(0).toUpperCase()+e.quality.slice(1)}</span>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function changeSleepMonth(dir) {
+  sleepCurrentMonth.setMonth(sleepCurrentMonth.getMonth() + dir);
+  renderSleepDiary();
+}
+
+// ══════════════════════════════════════════
+// WEIGHT
+// ══════════════════════════════════════════
+function saveWeight() {
+  const date = document.getElementById('weightDate').value;
+  const kg = document.getElementById('weightKg').value;
+  if (!date||!kg) { alert('Pon al menos la fecha y el peso'); return; }
+  const records = load('blw_weight');
+  records.push({ date, kg: parseFloat(kg), cm: document.getElementById('weightCm').value||null, pc: document.getElementById('weightPc').value||null, where: document.getElementById('weightWhere').value, note: document.getElementById('weightNote').value });
+  records.sort((a,b) => a.date.localeCompare(b.date));
+  save('blw_weight', records);
+  ['weightKg','weightCm','weightPc','weightNote'].forEach(id => document.getElementById(id).value='');
+  renderWeight();
+  alert('✅ Guardado');
+}
+
+function renderWeight() {
+  const records = load('blw_weight');
+  const list = document.getElementById('weightList');
+  const chart = document.getElementById('weightChart');
+  if (!records.length) {
+    list.innerHTML = '<div class="empty-state"><span class="empty-icon">⚖️</span><span class="empty-text">Sin registros todavía</span></div>';
+    chart.innerHTML = '<div class="empty-state" style="width:100%"><span class="empty-icon">📊</span><span class="empty-text">Añade mediciones para ver la gráfica</span></div>';
+    return;
+  }
+  const maxKg = Math.max(...records.map(r=>r.kg)), minKg = Math.min(...records.map(r=>r.kg));
+  const range = maxKg-minKg||1;
+  chart.innerHTML = records.map(r => {
+    const h = Math.max(20, Math.round(((r.kg-minKg)/range)*80+20));
+    return `<div class="chart-bar-wrap"><div class="chart-bar-val">${r.kg}</div><div class="chart-bar" style="height:${h}px"></div><div class="chart-bar-label">${r.date.slice(5).replace('-','/')}</div></div>`;
+  }).join('');
+  list.innerHTML = [...records].reverse().map((r,ri) => {
+    const i = records.length-1-ri, prev = records[i-1];
+    const diff = prev ? (r.kg-prev.kg).toFixed(2) : null;
+    const diffStr = diff ? (diff>0?`+${diff}kg`:`${diff}kg`) : 'Primera medición';
+    return `<div class="record-item">
+      <div class="ri-icon">⚖️</div>
+      <div class="ri-content">
+        <div class="ri-date">${formatDate(r.date)} · ${r.where}</div>
+        <div class="ri-main">${r.kg}kg ${r.cm?`· ${r.cm}cm`:''} ${r.pc?`· PC:${r.pc}cm`:''}</div>
+        ${r.note?`<div class="ri-sub">📝 ${r.note}</div>`:''}
+        <span class="ri-tag ${diff && parseFloat(diff)>0 ? 'tag-bien' : ''}">${diffStr}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+// WEEKLY PLAN DATA
+// ══════════════════════════════════════════
+const weeklyPlanData = [
+  { label: 'Semana 1 (6 meses)', days: [
+    { name: 'Lunes', emoji: '🥕', food: 'Zanahoria', note: 'Primer día — bastón al vapor', allergen: false, prep: 'Corta en bastón de 7–8 cm de grosor adulto. Cuece al vapor 18 min hasta muy blanda.', blw: 'Bastón entero: el bebé lo agarra con el puño y muerde el extremo blando.', mixto: 'Mismo bastón + puré de zanahoria con AOVE en bowl pequeño.' },
+    { name: 'Martes', emoji: '🥕', food: 'Zanahoria', note: 'Repite para familiarizar', allergen: false, prep: 'Igual que el lunes. Puedes variar la forma: bastón o rueda gorda muy blanda.', blw: 'Bastón o trozo grande para agarrar.', mixto: 'Puré más espeso que ayer. Pre-carga la cuchara y ofrece.' },
+    { name: 'Miércoles', emoji: '🥦', food: 'Brócoli', note: 'Floret cocido al vapor', allergen: false, prep: 'Floret de brócoli grande (el tallo hace de mango). Cuece al vapor 15 min.', blw: 'El bebé agarra el tallo y muerde el floret verde.', mixto: 'Floret + puré de brócoli con AOVE.' },
+    { name: 'Jueves', emoji: '🥦', food: 'Brócoli', note: 'Repite', allergen: false, prep: 'Repite floret de brócoli. Puedes añadir un poco de AOVE sobre el floret.', blw: 'Mismo enfoque, floret con tallo visible.', mixto: 'Combina con la zanahoria de días anteriores si fue bien.' },
+    { name: 'Viernes', emoji: '🍠', food: 'Boniato', note: 'Bastón horneado', allergen: false, prep: 'Bastón de boniato 7 cm. Hornea a 180°C 25 min con AOVE. Textura: blanda por dentro.', blw: 'Bastón horneado, ligeramente más firme que al vapor pero manejable.', mixto: 'Bastón + puré de boniato con leche materna o fórmula para suavizar.' },
+    { name: 'Sábado', emoji: '🍠', food: 'Boniato', note: 'Repite + combina', allergen: false, prep: 'Repite boniato. Puedes combinarlo con zanahoria si las dos han ido bien.', blw: 'Bastones de los dos en el plato.', mixto: 'Puré mixto de boniato y zanahoria.' },
+    { name: 'Domingo', emoji: '🎃', food: 'Calabaza', note: 'Bastón cocido', allergen: false, prep: 'Bastón de calabaza 7 cm. Cuece al vapor 20 min o microondas 5 min con tapa.', blw: 'Bastón grande. La calabaza se vuelve muy blanda y dulce.', mixto: 'Puré de calabaza con un chorrito de AOVE.' }
+  ]},
+  { label: 'Semana 2 (6 meses)', days: [
+    { name: 'Lunes', emoji: '🎃', food: 'Calabaza', note: 'Repite horneada', allergen: false, prep: 'Bastón de calabaza horneado a 180°C 20 min.', blw: 'Bastón horneado.', mixto: 'Puré de calabaza con AOVE y una pizca de canela.' },
+    { name: 'Martes', emoji: '🥑', food: 'Aguacate', note: 'Crudo, en tiras', allergen: false, prep: 'Aguacate muy maduro. Corta en cuartos con piel (la piel ayuda a agarrar).', blw: 'Tira de aguacate con piel para que pueda agarrar. Muerde la pulpa.', mixto: 'Tiras + aguacate aplastado con limón en bowl.' },
+    { name: 'Miércoles', emoji: '🥑', food: 'Aguacate', note: 'Repite', allergen: false, prep: 'Aguacate crudo. Debe estar muy maduro.', blw: 'Tiras con piel. Resbaladizo — normal que se le caiga.', mixto: 'Guacamole básico para explorar con los dedos.' },
+    { name: 'Jueves', emoji: '🍌', food: 'Plátano', note: 'Crudo, bastón pelado', allergen: false, prep: 'Plátano muy maduro (con manchas). Pela la mitad dejando la otra con piel como mango.', blw: 'Medio plátano con piel de agarre. El bebé muerde la pulpa expuesta.', mixto: 'Plátano aplastado en bowl + rodajas.' },
+    { name: 'Viernes', emoji: '🍌', food: 'Plátano', note: 'Repite', allergen: false, prep: 'Repite plátano maduro.', blw: 'Bastón con piel de agarre.', mixto: 'Puré de plátano + aguacate si fue bien.' },
+    { name: 'Sábado', emoji: '🌽', food: 'Calabacín', note: 'Cocido al vapor', allergen: false, prep: 'Bastón de calabacín 7 cm con piel. Cuece al vapor 15 min.', blw: 'Bastón con piel verde visible para agarrar.', mixto: 'Puré de calabacín con AOVE.' },
+    { name: 'Domingo', emoji: '🍐', food: 'Pera', note: 'Muy madura o cocida', allergen: false, prep: 'Pera muy madura: bastón crudo. O cuece al vapor 10 min para más suavidad.', blw: 'Bastón de pera: madura o cocida según textura necesaria.', mixto: 'Compota de pera sin azúcar en bowl.' }
+  ]},
+  { label: 'Semana 3 (6 meses) — 1er ALÉRGENO', days: [
+    { name: 'Lunes', emoji: '🍐', food: 'Pera', note: 'Repite pera', allergen: false, prep: 'Repite pera. Puedes combinar con boniato.', blw: 'Bastones variados: pera + boniato.', mixto: 'Puré mixto pera y boniato.' },
+    { name: 'Martes', emoji: '🥕', food: 'Mezcla colorida', note: 'Zanahoria + boniato', allergen: false, prep: 'Bastones de zanahoria Y boniato juntos.', blw: 'Plato con 2–3 bastones diferentes para elegir.', mixto: 'Purés de ambos en distintos lados del bowl.' },
+    { name: 'Miércoles', emoji: '🥚', food: 'Yema de huevo', note: '⚠️ ALÉRGENO — 1ª vez', allergen: true, prep: 'Huevo duro: cuece 12 min. Separa la yema. Aplasta con AOVE. Ofrece POR LA MAÑANA.', blw: 'Yema aplastada untada sobre un bastón de verdura ya conocida.', mixto: 'Yema aplastada en bowl, el bebé mete los dedos.' },
+    { name: 'Jueves', emoji: '🥚', food: 'Yema de huevo', note: '2º día — observa', allergen: true, prep: 'Igual que el miércoles. Aumenta ligeramente la cantidad si ayer fue bien.', blw: 'Yema sobre bastón de zanahoria o boniato.', mixto: 'Yema en bowl + bastón conocido.' },
+    { name: 'Viernes', emoji: '🥚', food: 'Yema de huevo', note: '3er día — confirma OK', allergen: true, prep: 'Si los 2 días anteriores sin síntomas, confirma tolerancia.', blw: 'Tira de tortilla de yema (2 yemas + un poco de AOVE en sartén).', mixto: 'Tortilla aplastada en bowl.' },
+    { name: 'Sábado', emoji: '🥦', food: 'Brócoli', note: 'Descansa de alérgenos', allergen: false, prep: 'Floret de brócoli al vapor. Día de descanso de alérgenos.', blw: 'Florets de brócoli al vapor.', mixto: 'Brócoli cocido aplastado.' },
+    { name: 'Domingo', emoji: '🍠', food: 'Boniato', note: 'Repite favoritos', allergen: false, prep: 'Bastones de los favoritos de la semana + alguna fruta.', blw: 'Variedad: boniato + aguacate.', mixto: 'Puré de boniato + plátano aplastado.' }
+  ]},
+  { label: 'Semana 4 (6 meses) — 2º ALÉRGENO', days: [
+    { name: 'Lunes', emoji: '🐟', food: 'Merluza', note: '⚠️ ALÉRGENO — 1ª vez', allergen: true, prep: 'Merluza fresca sin espinas ni piel. Cuece al vapor 8 min. Desmenúzala y comprueba espinas. POR LA MAÑANA.', blw: 'Forma una croqueta de merluza aplastada con patata cocida — fácil de agarrar.', mixto: 'Merluza desmenuzada mezclada con puré de patata o zanahoria.' },
+    { name: 'Martes', emoji: '🐟', food: 'Merluza', note: '2º día', allergen: true, prep: 'Repite merluza. Puedes probar al horno con AOVE a 180°C durante 12 min.', blw: 'Lomos de merluza pequeños.', mixto: 'Merluza con puré de verduras.' },
+    { name: 'Miércoles', emoji: '🐟', food: 'Merluza', note: '3er día — confirma OK', allergen: true, prep: 'Confirma tolerancia. A partir de ahora el pescado blanco es seguro 2 veces/semana.', blw: 'Merluza en croqueta o lomo.', mixto: 'Crema de verduras con merluza desmenuzada.' },
+    { name: 'Jueves', emoji: '🥕', food: 'Verduras variadas', note: 'Descansa de alérgenos', allergen: false, prep: 'Variedad de verduras ya conocidas.', blw: 'Plato colorido con 3 bastones.', mixto: 'Menestra blanda con varios purés.' },
+    { name: 'Viernes', emoji: '🥑', food: 'Aguacate', note: 'Favorito', allergen: false, prep: 'Aguacate crudo maduro.', blw: 'Tira de aguacate con piel.', mixto: 'Guacamole básico en bowl.' },
+    { name: 'Sábado', emoji: '🎃', food: 'Mezcla verduras', note: 'Variedad de colores', allergen: false, prep: 'Prepara 4–5 verduras distintas a la vez.', blw: 'Plato de colores: verde, naranja, amarillo.', mixto: 'Purés de colores diferentes en distintas partes del bowl.' },
+    { name: 'Domingo', emoji: '🍌', food: 'Plátano', note: 'Fruta dulce cierre de semana', allergen: false, prep: 'Plátano maduro con manchas — el más dulce.', blw: 'Bastón con piel de agarre.', mixto: 'Puré de plátano con pera.' }
+  ]},
+  { label: 'Semana 5 (7 meses) — Gluten y Lácteos', days: [
+    { name: 'Lunes', emoji: '🍞', food: 'Pan (gluten)', note: '⚠️ ALÉRGENO — miga blanda', allergen: true, prep: 'Pan de miga blanda sin corteza. Corta en bastón.', blw: 'Bastón de miga del tamaño de un dedo.', mixto: 'Miga aplastada untada con aguacate o yema de huevo.' },
+    { name: 'Martes', emoji: '🍞', food: 'Pan', note: '2º día', allergen: true, prep: 'Repite pan con AOVE por encima.', blw: 'Bastón de pan con AOVE.', mixto: 'Tostada blanda cortada en dedos.' },
+    { name: 'Miércoles', emoji: '🍞', food: 'Pan', note: '3er día — confirma OK', allergen: true, prep: 'Confirma tolerancia al gluten.', blw: 'Pan con untado de aguacate o yema.', mixto: 'Tostada blanda con crema de verdura.' },
+    { name: 'Jueves', emoji: '🥔', food: 'Patata cocida', note: 'Sin sal, muy blanda', allergen: false, prep: 'Patata cocida en agua 20 min. Bastón o cubo. Muy blanda.', blw: 'Bastón de patata cocida.', mixto: 'Puré de patata con AOVE y leche materna/fórmula.' },
+    { name: 'Viernes', emoji: '🍚', food: 'Arroz', note: 'En bolas compactas', allergen: false, prep: 'Arroz muy cocido (doble tiempo). Forma bolitas compactas.', blw: 'Bolitas de arroz bien compactas.', mixto: 'Arroz papilla con caldo de verduras sin sal.' },
+    { name: 'Sábado', emoji: '🥛', food: 'Yogur entero', note: '⚠️ ALÉRGENO lácteos — 1ª vez', allergen: true, prep: 'Yogur entero natural sin azúcar. 1–2 cucharadas. POR LA MAÑANA.', blw: 'Pre-carga la cuchara y ofrece — el bebé se la lleva a la boca solo.', mixto: 'Yogur en bowl pequeño para explorar con los dedos y la cuchara.' },
+    { name: 'Domingo', emoji: '🥛', food: 'Yogur', note: 'Confirma tolerancia', allergen: true, prep: 'Repite yogur. Si sin síntomas, los lácteos quedan incorporados.', blw: 'Yogur con trozos de plátano aplastado.', mixto: 'Yogur con fruta mezclada.' }
+  ]},
+  { label: 'Semana 6 (7 meses) — Pollo y Proteínas', days: [
+    { name: 'Lunes', emoji: '🐔', food: 'Pollo', note: 'Cocido desmenuzado', allergen: false, prep: 'Pechuga de pollo hervida 25 min. Desmenúzala muy fina. Sin sal.', blw: 'Tiras de pechuga compactadas en croqueta.', mixto: 'Pollo desmenuzado mezclado con puré de patata o zanahoria.' },
+    { name: 'Martes', emoji: '🐔', food: 'Pollo', note: 'Repite', allergen: false, prep: 'Repite pollo. Puedes probar al horno con AOVE a 180°C.', blw: 'Muslo de pollo cocido entero (el hueso sirve de mango, retira antes).', mixto: 'Pollo desmigado en caldo sin sal como sopa.' },
+    { name: 'Miércoles', emoji: '🫘', food: 'Lentejas', note: 'Muy cocidas sin sal', allergen: false, prep: 'Lentejas rojas: 200ml agua + 80g lentejas, 20 min hasta que se deshagan.', blw: 'Forma bolitas compactas de lentejas cocidas.', mixto: 'Crema de lentejas con AOVE en bowl.' },
+    { name: 'Jueves', emoji: '🫘', food: 'Lentejas', note: 'Repite', allergen: false, prep: 'Repite lentejas. Añade cúrcuma y una pizca de comino.', blw: 'Bolitas de lentejas + bastón de verdura.', mixto: 'Dal de lentejas rojas en bowl.' },
+    { name: 'Viernes', emoji: '🥚', food: 'Tortita plátano+huevo', note: 'Combina conocidos', allergen: true, prep: 'Plátano aplastado + 1 huevo + avena. Tortita pequeña en sartén sin aceite.', blw: 'Tortita del tamaño de la palma del bebé.', mixto: 'Tortita en trozos pequeños + plátano aplastado al lado.' },
+    { name: 'Sábado', emoji: '🍝', food: 'Pasta', note: '⚠️ ALÉRGENO — muy cocida', allergen: true, prep: 'Pasta (macarrones o espirales) cocida el doble del tiempo. Sin sal. Muy blanda.', blw: 'Espirales o macarrones enteros.', mixto: 'Pasta muy blanda con salsa de tomate casero sin sal.' },
+    { name: 'Domingo', emoji: '🍝', food: 'Pasta', note: 'Confirma gluten', allergen: true, prep: 'Repite pasta.', blw: 'Pasta con un poco de AOVE y perejil.', mixto: 'Pasta con puré de verdura mezclado.' }
+  ]},
+  { label: 'Semana 7 (8 meses) — Soja y Marisco', days: [
+    { name: 'Lunes', emoji: '🍎', food: 'Manzana', note: 'Cocida o muy madura', allergen: false, prep: 'Manzana al microondas 3 min o muy madura. Bastón sin piel.', blw: 'Bastón de manzana cocida.', mixto: 'Compota de manzana sin azúcar.' },
+    { name: 'Martes', emoji: '🍓', food: 'Fresa', note: 'Cortada en 4 longitudinal', allergen: false, prep: 'Fresa madura. Cortar en cuartos longitudinales.', blw: 'Cuartos de fresa: forma manejable para la pinza.', mixto: 'Fresas aplastadas con yogur.' },
+    { name: 'Miércoles', emoji: '🫘', food: 'Edamame/Soja', note: '⚠️ ALÉRGENO — 1ª vez', allergen: true, prep: 'Edamame cocido. Saca los granos de la vaina. O usa tofu firme en cubos. POR LA MAÑANA.', blw: 'Tofu firme en cubos de 2 cm.', mixto: 'Edamame aplastado en bowl o mezclado con puré.' },
+    { name: 'Jueves', emoji: '🫘', food: 'Soja', note: '2º día', allergen: true, prep: 'Repite tofu o edamame. Puedes marinarlo con limón.', blw: 'Cubos de tofu a la plancha con AOVE.', mixto: 'Tofu aplastado con aguacate.' },
+    { name: 'Viernes', emoji: '🫘', food: 'Soja', note: '3er día — confirma OK', allergen: true, prep: 'Confirma tolerancia.', blw: 'Tofu o edamame en cualquier preparación.', mixto: 'Bebida de soja como sustituto de leche en puré.' },
+    { name: 'Sábado', emoji: '🦐', food: 'Gamba cocida', note: '⚠️ ALÉRGENO crustáceos', allergen: true, prep: 'Gambas cocidas, peladas, sin cabeza. Comprueba que no haya partes duras. POR LA MAÑANA.', blw: 'Gamba entera pelada.', mixto: 'Gamba troceada fina mezclada con puré de verdura.' },
+    { name: 'Domingo', emoji: '🦐', food: 'Gamba', note: 'Confirma crustáceos', allergen: true, prep: 'Repite gambas. Si bien, los crustáceos quedan incorporados.', blw: 'Langostino pelado cocido.', mixto: 'Croqueta de gamba y patata.' }
+  ]},
+  { label: 'Semana 8 (8 meses) — Huevo entero', days: [
+    { name: 'Lunes', emoji: '🍳', food: 'Huevo entero', note: '⚠️ Clara incluida — 1ª vez', allergen: true, prep: 'Tortilla francesa solo con aceite de oliva, sin sal. Huevo entero. POR LA MAÑANA.', blw: 'Tira de tortilla francesa del tamaño de un dedo.', mixto: 'Tortilla aplastada en bowl con verduras.' },
+    { name: 'Martes', emoji: '🍳', food: 'Huevo entero', note: '2º día, observa bien', allergen: true, prep: 'Huevo duro entero. Córtalo en gajos.', blw: 'Gajo de huevo duro que el bebé puede morder.', mixto: 'Huevo duro aplastado con AOVE.' },
+    { name: 'Miércoles', emoji: '🍳', food: 'Tortilla francesa', note: '3er día — confirma OK', allergen: true, prep: 'Confirma tolerancia. El huevo entero queda incorporado.', blw: 'Tortilla con verduras en tiras.', mixto: 'Revuelto de huevo con verdura aplastado.' },
+    { name: 'Jueves', emoji: '🫐', food: 'Arándanos', note: 'Cortados por la mitad', allergen: false, prep: 'Arándanos frescos cortados por la mitad (NUNCA enteros).', blw: 'Mitades de arándano para la pinza.', mixto: 'Arándanos aplastados con yogur.' },
+    { name: 'Viernes', emoji: '🥭', food: 'Mango', note: 'Trozos blandos', allergen: false, prep: 'Mango muy maduro. Bastón con piel o cubos sin piel.', blw: 'Bastón de mango con piel.', mixto: 'Puré de mango con yogur.' },
+    { name: 'Sábado', emoji: '🐟', food: 'Croqueta de merluza', note: 'Receta del libro', allergen: true, prep: 'Ver receta de Croquetas de Merluza y Patata.', blw: 'Croqueta del tamaño de un dedo.', mixto: 'Croqueta aplastada en bowl.' },
+    { name: 'Domingo', emoji: '🥦', food: 'Plato colorido', note: 'Variedad máxima', allergen: false, prep: 'Prepara 4–5 alimentos diferentes ya conocidos.', blw: 'Plato con colores del arcoíris.', mixto: 'Bowl con varios purés de colores distintos.' }
+  ]},
+  { label: 'Semana 9 (9 meses) — Frutos secos', days: [
+    { name: 'Lunes', emoji: '🥜', food: 'Crema cacahuete', note: '⚠️ ALÉRGENO — 1ª vez', allergen: true, prep: 'Crema de cacahuete 100% sin sal, sin azúcar. Unta muy fina en tostada blanda. POR LA MAÑANA.', blw: 'Tostada blanda untada con crema de cacahuete.', mixto: 'Misma tosta. Nunca diluida sola.' },
+    { name: 'Martes', emoji: '🥜', food: 'Crema cacahuete', note: '2º día', allergen: true, prep: 'Repite. Puedes mezclarla con yogur.', blw: 'Pan con crema o mezclada en tortita.', mixto: 'Yogur con crema de cacahuete mezclada.' },
+    { name: 'Miércoles', emoji: '🥜', food: 'Crema cacahuete', note: '3er día — confirma OK', allergen: true, prep: 'Confirma tolerancia.', blw: 'Tostada o incorporado en tortitas.', mixto: 'Mezcla en smoothie de plátano.' },
+    { name: 'Jueves', emoji: '🌰', food: 'Crema de almendra', note: '⚠️ ALÉRGENO frutos secos', allergen: true, prep: 'Crema de almendra 100% sin sal sin azúcar. En tostada o yogur. POR LA MAÑANA.', blw: 'Tostada con crema de almendra.', mixto: 'En yogur o mezclada con puré de fruta.' },
+    { name: 'Viernes', emoji: '🌰', food: 'Crema almendra', note: '2º día', allergen: true, prep: 'Repite crema de almendra.', blw: 'Pan con crema.', mixto: 'En smoothie de plátano o en gachas de avena.' },
+    { name: 'Sábado', emoji: '🌰', food: 'Crema avellana', note: '3er día — sin azúcar', allergen: true, prep: 'Crema de avellana 100% sin azúcar (no Nutella).', blw: 'Tostada con crema de avellana.', mixto: 'En yogur natural.' },
+    { name: 'Domingo', emoji: '🫘', food: 'Hummus casero', note: '⚠️ Sésamo (tahini)', allergen: true, prep: 'El tahini introduce el sésamo. Ver receta de Hummus.', blw: 'Bastón de pan o verdura untado en hummus.', mixto: 'Hummus en bowl para explorar.' }
+  ]},
+  { label: 'Semana 10 (9 meses) — Platos combinados', days: [
+    { name: 'Lunes', emoji: '🍲', food: 'Lentejas con cúrcuma', note: 'Receta del libro', allergen: false, prep: 'Ver receta de Lentejas Rojas con Cúrcuma y Coco.', blw: 'En bowl: el bebé recoge con dedos o cuchara.', mixto: 'Dal en bowl + bastón de pan para mojar.' },
+    { name: 'Martes', emoji: '🥘', food: 'Arroz + pollo', note: 'Plato familiar', allergen: false, prep: 'Arroz muy cocido + pollo desmenuzado. Sin sal.', blw: 'Bolitas compactas de arroz + tiras de pollo.', mixto: 'Papilla de arroz con pollo desmenuzado mezclado.' },
+    { name: 'Miércoles', emoji: '🥞', food: 'Tortita de avena', note: 'Desayuno completo', allergen: true, prep: 'Tortita de avena + plátano + huevo. Ver receta.', blw: 'Tortita del tamaño de la palma.', mixto: 'Tortita en trozos + plátano aplastado.' },
+    { name: 'Jueves', emoji: '🐔', food: 'Pollo + verduras', note: 'Plato completo', allergen: false, prep: 'Pollo al horno + mix de verduras. Sin sal.', blw: 'Tiras de pollo + bastones de verdura.', mixto: 'Pollo desmenuzado con crema de verduras.' },
+    { name: 'Viernes', emoji: '🐟', food: 'Pescado blanco', note: 'Al horno con limón', allergen: true, prep: 'Merluza o bacalao al horno con AOVE y limón 15 min a 180°C.', blw: 'Lomos de pescado que el bebé puede coger.', mixto: 'Pescado desmenuzado en puré de patata.' },
+    { name: 'Sábado', emoji: '🥦', food: 'Brócoli + huevo', note: 'Combinación nutritiva', allergen: true, prep: 'Florets de brócoli al vapor + tortilla de huevo con brócoli.', blw: 'Tortilla de brócoli en tiras + florets.', mixto: 'Revuelto de brócoli y huevo aplastado.' },
+    { name: 'Domingo', emoji: '🍎', food: 'Fruta variada', note: 'Merienda especial', allergen: false, prep: 'Manzana cocida, fresas en cuartos, plátano, pera madura.', blw: 'Plato de frutas variadas.', mixto: 'Compota mixta de frutas sin azúcar.' }
+  ]},
+  { label: 'Semana 11 (10 meses) — Moluscos', days: [
+    { name: 'Lunes', emoji: '🐚', food: 'Mejillón', note: '⚠️ ALÉRGENO molusco — 1ª vez', allergen: true, prep: 'Mejillones cocidos al vapor. Retira de la concha. Sin partes duras. POR LA MAÑANA.', blw: 'Mejillón entero (sin concha).', mixto: 'Mejillón troceado fino en puré de patata.' },
+    { name: 'Martes', emoji: '🐚', food: 'Mejillón', note: '2º día', allergen: true, prep: 'Repite mejillón.', blw: 'Mejillones en plato familiar adaptado.', mixto: 'Caldo de mejillón con pasta.' },
+    { name: 'Miércoles', emoji: '🐚', food: 'Mejillón', note: '3er día — confirma OK', allergen: true, prep: 'Confirma tolerancia.', blw: 'Arroz con mejillones.', mixto: 'Crema de mejillones sin sal.' },
+    { name: 'Jueves', emoji: '🫕', food: 'Croqueta de bacalao', note: 'Sin sal', allergen: true, prep: 'Bacalao fresco (no salado) cocido + patata. Croqueta al horno.', blw: 'Croqueta del tamaño de un dedo.', mixto: 'Croqueta aplastada con puré.' },
+    { name: 'Viernes', emoji: '🥗', food: 'Ensalada blanda', note: 'Tomate+aguacate+huevo', allergen: true, prep: 'Tomate pelado sin semillas, aguacate en cubos, huevo duro en gajos.', blw: 'Cubos grandes de todos los ingredientes.', mixto: 'Todo aplastado mezclado en bowl.' },
+    { name: 'Sábado', emoji: '🍕', food: 'Mini pizza casera', note: 'Pan+tomate+queso', allergen: true, prep: 'Base de pan, tomate natural triturado sin sal, queso fresco. Gratina 5 min.', blw: 'Pizza en triángulo que puede coger.', mixto: 'Pizza en trozos pequeños.' },
+    { name: 'Domingo', emoji: '🥘', food: 'Guiso familiar', note: 'Sin sal añadida', allergen: false, prep: 'Guiso de garbanzos con verduras. Separado antes de añadir sal para la familia.', blw: 'Garbanzos enteros + verduras.', mixto: 'Guiso aplastado en bowl.' }
+  ]},
+  { label: 'Semana 12 (10 meses) — Casi dieta familiar', days: [
+    { name: 'Lunes', emoji: '🥙', food: 'Wrap de verduras', note: 'Tortita+hummus+zanahoria', allergen: true, prep: 'Tortita de trigo pequeña, hummus, zanahoria cocida. Enrolla cortando en trozos.', blw: 'Trozos del wrap enrollados.', mixto: 'Ingredientes por separado en bowl.' },
+    { name: 'Martes', emoji: '🍳', food: 'Revuelto de verduras', note: 'Huevo+calabacín', allergen: true, prep: 'Revuelto de huevo con calabacín rallado + queso fresco.', blw: 'Revuelto compacto cortado en dados.', mixto: 'Revuelto muy aplastado con cuchara.' },
+    { name: 'Miércoles', emoji: '🐄', food: 'Ternera', note: 'Muy cocida, en hebras', allergen: false, prep: 'Ternera cocida muy lentamente hasta deshacerse en hebras. Sin sal.', blw: 'Hebras de ternera que el bebé puede agarrar.', mixto: 'Ternera muy desmigada mezclada con puré de patata.' },
+    { name: 'Jueves', emoji: '🫘', food: 'Garbanzos', note: 'Con espinacas', allergen: false, prep: 'Garbanzos muy cocidos con espinacas salteadas sin sal, con AOVE.', blw: 'Garbanzos enteros blandos + espinacas en trozos.', mixto: 'Todo en crema espesa en bowl.' },
+    { name: 'Viernes', emoji: '🐟', food: 'Salmón', note: 'Omega-3, al horno', allergen: true, prep: 'Salmón al horno con AOVE y limón 15 min. Sin sal. Retira todas las espinas.', blw: 'Trozo de salmón que el bebé puede agarrar.', mixto: 'Salmón desmenuzado con puré de patata y brócoli.' },
+    { name: 'Sábado', emoji: '🧁', food: 'Muffin plátano+avena', note: 'Sin azúcar', allergen: true, prep: '2 plátanos + 2 huevos + 150g avena + canela. Hornea a 175°C 20 min.', blw: 'Muffin entero que puede morder.', mixto: 'Muffin aplastado en bowl con yogur.' },
+    { name: 'Domingo', emoji: '🍲', food: 'Cocido familiar', note: 'Sin sal — separado', allergen: false, prep: 'Cocido familiar: aparta la parte del bebé antes de salar.', blw: 'Plato completo con todo por separado.', mixto: 'Caldo + ingredientes aplastados juntos.' }
+  ]}
+];
+
+let currentWeek = 0;
+
+function renderWeek() {
+  const container = document.getElementById('sub-screen-container');
+  if (!container) return;
+  const weekNavEl = container.querySelector('#weekLabel');
+  if (weekNavEl) weekNavEl.textContent = weeklyPlanData[currentWeek].label;
+  const wcEl = container.querySelector('#weekContent');
+  if (!wcEl) return;
+  const w = weeklyPlanData[currentWeek];
+  wcEl.innerHTML = w.days.map((d,i) => `
+    <div class="day-card ${d.allergen ? 'allergen-day' : ''}">
+      <div class="day-card-header" onclick="toggleDayCard(this)">
+        <span class="dch-emoji">${d.emoji}</span>
+        <div class="dch-info">
+          <div class="dch-day">${d.name}</div>
+          <div class="dch-food">${d.food}</div>
+        </div>
+        ${d.allergen ? '<span class="dch-badge">⚠️ Alérgeno</span>' : ''}
+        <span class="dch-arrow">▼</span>
+      </div>
+      <div class="day-card-body">
+        <p style="font-size:0.78rem;color:var(--text2);font-style:italic;margin-bottom:10px">${d.note}</p>
+        <p style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text2);margin-bottom:4px">🔪 Preparación</p>
+        <p class="prep-text">${d.prep}</p>
+        <div class="duo-grid">
+          <div class="duo-box duo-blw"><h5>🤜 BLW Puro</h5>${d.blw}</div>
+          <div class="duo-box duo-mixed"><h5>🔀 BLW Mixto</h5>${d.mixto}</div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function toggleDayCard(header) {
+  header.classList.toggle('open');
+  header.nextElementSibling.classList.toggle('open');
+}
+
+function changeWeek(dir) {
+  currentWeek = Math.max(0, Math.min(weeklyPlanData.length - 1, currentWeek + dir));
+  renderWeek();
+}
+
+// ══════════════════════════════════════════
+// SUB-SCREEN BUILDERS
+// ══════════════════════════════════════════
+
+function buildIntro() {
+  return `
+  <button class="back-btn" onclick="backToMoreHub()">← Volver</button>
+  <div class="section-topbar"><h1>🥑 ¿Qué es BLW?</h1><p>Alimentación complementaria guiada por el bebé</p></div>
+  <div class="info-section">
+    <div class="alert-card info">
+      <span>ℹ️</span>
+      <span><strong>BLW</strong> (Baby-Led Weaning) es un método de introducción de la alimentación complementaria donde el bebé autodirige su alimentación desde el principio, ofreciendo alimentos sólidos en formatos que puede manipular.</span>
+    </div>
+    <div class="blw-intro-grid">
+      <div class="blw-intro-card">
+        <span class="bic-icon">🤜</span>
+        <div class="bic-title">BLW Puro</div>
+        <div class="bic-desc">Alimentos enteros, el bebé los agarra, muerde y decide cuánto comer</div>
+      </div>
+      <div class="blw-intro-card">
+        <span class="bic-icon">🔀</span>
+        <div class="bic-title">BLW Mixto</div>
+        <div class="bic-desc">Combina trozos enteros con purés y cremas. Más flexible para familias</div>
+      </div>
+      <div class="blw-intro-card">
+        <span class="bic-icon">✅</span>
+        <div class="bic-title">Beneficios</div>
+        <div class="bic-desc">Desarrollo motriz, autorregulación del apetito, variedad de texturas</div>
+      </div>
+      <div class="blw-intro-card">
+        <span class="bic-icon">📅</span>
+        <div class="bic-title">Cuándo</div>
+        <div class="bic-desc">A partir de 6 meses, con señales de preparación del bebé</div>
+      </div>
+    </div>
+    <div class="sub-header">📋 Señales de preparación</div>
+    <div class="card">
+      <p style="font-size:0.85rem;line-height:1.8;font-weight:600;">
+        ✅ Se mantiene sentado con apoyo<br>
+        ✅ Ha perdido el reflejo de extrusión<br>
+        ✅ Muestra interés por la comida<br>
+        ✅ Coordina mano-boca<br>
+        ✅ Ha cumplido 6 meses (no antes)
+      </p>
+    </div>
+    <div class="alert-card danger">
+      <span>🚫</span>
+      <span><strong>NUNCA antes de los 6 meses.</strong> El sistema digestivo e inmunológico no está preparado.</span>
+    </div>
+    <div class="alert-card warning">
+      <span>⚠️</span>
+      <span>La leche materna o fórmula sigue siendo el alimento principal hasta el año de vida. La comida complementa, no sustituye.</span>
+    </div>
+  </div>`;
+}
+
+function buildMeses() {
+  const meses = [
+    { num: '6', label: '6 meses', color: '#FFB347', intro: 'Inicio de la aventura', alimentos: ['Zanahoria','Boniato','Calabaza','Calabacín','Brócoli','Aguacate','Plátano','Pera'], textura: 'Todo muy blando, bastones de 7cm', proteinas: 'Sin proteína animal todavía — introduce suavemente al final del mes', notas: 'Ofrece solo 1 alimento nuevo cada 3-4 días. Solo a mediodía. La leche sigue siendo el alimento principal.' },
+    { num: '7', label: '7 meses', color: '#FF8C00', intro: 'Primeras proteínas y gluten', alimentos: ['Pan','Pasta','Arroz','Patata','Pollo','Merluza','Yogur entero','Lentejas'], textura: 'Bastones, croquetas, bolitas. El bebé empieza a usar la pinza', proteinas: 'Pollo, merluza (sin espinas). Introduce gluten y lácteos como alérgenos', notas: 'Ya puede comer en desayuno y comida. Introduce el gluten (pan/pasta) como alérgeno.' },
+    { num: '8', label: '8 meses', color: '#E67E22', intro: 'Más variedad, huevo entero', alimentos: ['Huevo entero','Fresas','Manzana','Arándanos','Mango','Soja/Tofu','Gambas'], textura: 'Más variedad de formas. Empieza a usar la cuchara solo', proteinas: 'Introduce huevo entero (clara incluida) y crustáceos. Soja/tofu', notas: 'Ya puede comer en 3 tiempos. Introduce marisco con mucha atención.' },
+    { num: '9', label: '9 meses', color: '#D35400', intro: 'Frutos secos y platos combinados', alimentos: ['Crema cacahuete','Crema almendra','Hummus','Garbanzos','Arroz+pollo','Tortitas de avena'], textura: 'Empieza a masticar de verdad. Platos combinados y mezclas', proteinas: 'Frutos secos en crema (nunca enteros). Mayor variedad de legumbres', notas: 'NUNCA frutos secos enteros — riesgo de atragantamiento. Solo en crema o molidos.' },
+    { num: '10', label: '10 meses', color: '#C0392B', intro: 'Moluscos y dieta familiar', alimentos: ['Mejillón','Almejas','Ternera','Salmón','Guisos familiares','Mini pizzas'], textura: 'Come casi todo lo que come la familia (sin sal extra)', proteinas: 'Introduce moluscos. Amplía carnes rojas con ternera', notas: 'Empieza la dieta familiar adaptada: separa la parte del bebé antes de añadir sal.' },
+    { num: '11', label: '11 meses', color: '#8E44AD', intro: 'Consolidando la dieta completa', alimentos: ['Todo lo anterior','Queso fresco','Más especias suaves','Frutos del bosque'], textura: 'Texturas variadas, come con la familia', proteinas: 'Todos los grupos de alimentos incorporados', notas: 'Aumenta la variedad de especias suaves (orégano, albahaca, curry suave).' },
+    { num: '12', label: '12 meses', color: '#2980B9', intro: '¡Un año! Dieta completa', alimentos: ['Dieta familiar completa','Miel (a partir del año)','Leche de vaca entera'], textura: 'Come lo que la familia con adaptaciones mínimas', proteinas: 'Completa: todas las proteínas animales y vegetales', notas: 'A partir del año puede tomar leche de vaca entera, miel y una dieta prácticamente idéntica a la familiar.' }
+  ];
+  let activeM = 0;
+  const tabs = meses.map((m,i) => `<button class="tab-pill ${i===0?'active':''}" onclick="switchMesTab(${i},this)">${m.num}m</button>`).join('');
+  const bodies = meses.map((m,i) => `
+    <div id="mes-body-${i}" style="${i===0?'':'display:none'}">
+      <div class="alert-card success">
+        <span style="font-size:1.4rem">📅</span>
+        <div><strong>${m.label}:</strong> ${m.intro}</div>
+      </div>
+      <div class="sub-header">🍽️ Alimentos de este mes</div>
+      <div class="allergen-chips">${m.alimentos.map(a => `<span class="allergen-chip" style="background:#4D96FF12;border-color:#4D96FF50;color:#2a5db0">${a}</span>`).join('')}</div>
+      <div class="sub-header">🎨 Texturas</div>
+      <div class="card"><p style="font-size:0.85rem;font-weight:600;line-height:1.6">${m.textura}</p></div>
+      <div class="sub-header">🥩 Proteínas</div>
+      <div class="card"><p style="font-size:0.85rem;font-weight:600;line-height:1.6">${m.proteinas}</p></div>
+      <div class="alert-card warning"><span>💡</span><span>${m.notas}</span></div>
+    </div>`).join('');
+  return `
+  <button class="back-btn" onclick="backToMoreHub()">← Volver</button>
+  <div class="section-topbar"><h1>📅 Por Meses</h1><p>Guía semana a semana de 6 a 12 meses</p></div>
+  <div class="info-section">
+    <div class="tab-row">${tabs}</div>
+    <div id="mes-bodies">${bodies}</div>
+  </div>`;
+}
+
+function switchMesTab(idx, btn) {
+  document.querySelectorAll('#sub-screen-container .tab-pill').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  for (let i = 0; i < 7; i++) {
+    const el = document.getElementById('mes-body-'+i);
+    if (el) el.style.display = i === idx ? '' : 'none';
+  }
+}
+
+function buildSemanas() {
+  return `
+  <button class="back-btn" onclick="backToMoreHub()">← Volver</button>
+  <div class="section-topbar"><h1>🗓️ Plan Semanal</h1><p>12 semanas de alimentación detalladas</p></div>
+  <div class="info-section">
+    <div class="week-nav-bar">
+      <button class="week-nav-btn" onclick="changeWeek(-1)">◀</button>
+      <span class="week-label" id="weekLabel">${weeklyPlanData[currentWeek].label}</span>
+      <button class="week-nav-btn" onclick="changeWeek(1)">▶</button>
+    </div>
+    <div class="alert-card info"><span>🟠</span><span>Fondo naranja = introducción de alérgeno. Toca cada día para ver la preparación.</span></div>
+    <div id="weekContent"></div>
+  </div>`;
+}
+
+function buildAlergenos() {
+  const alergenos = [
+    { emoji:'🥚', name:'Huevo', when:'6-7 meses', how_blw:'Yema aplastada sobre bastón, luego tortilla en tiras', how_mixed:'Yema en bowl para explorar con dedos', color:'#FFD93D' },
+    { emoji:'🐟', name:'Pescado', when:'6-7 meses', how_blw:'Lomo al vapor, croqueta de merluza y patata', how_mixed:'Desmenuzado en puré de verduras o patata', color:'#4D96FF' },
+    { emoji:'🥛', name:'Lácteos', when:'7 meses', how_blw:'Yogur en cuchara pre-cargada, queso fresco en dados', how_mixed:'Yogur en bowl para explorar', color:'#C77DFF' },
+    { emoji:'🌾', name:'Gluten', when:'7 meses', how_blw:'Pan de miga blanda, pasta muy cocida (espirales)', how_mixed:'Tostada blanda cortada en dedos', color:'#FFB347' },
+    { emoji:'🫘', name:'Soja', when:'8 meses', how_blw:'Tofu firme en cubos 2cm, edamame sin vaina aplastado', how_mixed:'Tofu aplastado con aguacate', color:'#6BCB77' },
+    { emoji:'🦐', name:'Crustáceos', when:'8 meses', how_blw:'Gamba entera pelada cocida, langostino pelado', how_mixed:'Troceado fino en puré de verduras', color:'#FF6B6B' },
+    { emoji:'🥜', name:'Frutos secos', when:'9 meses', how_blw:'Crema en tostada blanda (NUNCA enteros)', how_mixed:'Mezclado en yogur o smoothie', color:'#E67E22' },
+    { emoji:'🌱', name:'Sésamo', when:'9 meses', how_blw:'Hummus casero (tahini) en bastón o tostada', how_mixed:'Hummus en bowl para explorar', color:'#8E44AD' },
+    { emoji:'🐚', name:'Moluscos', when:'10 meses', how_blw:'Mejillón entero sin concha, almeja cocida', how_mixed:'Troceado fino en crema o caldo', color:'#2980B9' }
+  ];
+  return `
+  <button class="back-btn" onclick="backToMoreHub()">← Volver</button>
+  <div class="section-topbar"><h1>⚠️ Alérgenos</h1><p>Guía de introducción segura</p></div>
+  <div class="info-section">
+    <div class="alert-card danger"><span>🚨</span><span><strong>Regla de oro:</strong> Introduce un alérgeno cada 3-4 días, POR LA MAÑANA, en casa, con acceso rápido a urgencias. Nunca con fiebre o eccema activo.</span></div>
+    ${alergenos.map(a => `
+    <div class="content-card">
+      <div class="content-card-header" onclick="toggleContentCard(this)">
+        <div class="cch-icon" style="background:${a.color}20">${a.emoji}</div>
+        <div class="cch-text">
+          <h3>${a.name}</h3>
+          <p>Desde los ${a.when}</p>
+        </div>
+        <span class="cch-arrow">▼</span>
+      </div>
+      <div class="content-card-body">
+        <div class="duo-grid">
+          <div class="duo-box duo-blw"><h5>🤜 BLW Puro</h5>${a.how_blw}</div>
+          <div class="duo-box duo-mixed"><h5>🔀 BLW Mixto</h5>${a.how_mixed}</div>
+        </div>
+      </div>
+    </div>`).join('')}
+    <div class="alert-card warning"><span>⚠️</span><span>Los síntomas de alergia pueden aparecer hasta 2 horas después. Observa: urticaria, vómitos, dificultad respiratoria. Ante duda, llama al 112.</span></div>
+  </div>`;
+}
+
+function buildTexturas() {
+  return `
+  <button class="back-btn" onclick="backToMoreHub()">← Volver</button>
+  <div class="section-topbar"><h1>🎨 Guía de Texturas</h1><p>Qué ofrecer según la edad</p></div>
+  <div class="info-section">
+    <div class="sub-header">6 meses — Muy blando</div>
+    <div class="texture-grid">
+      <div class="texture-box" style="background:#4D96FF12;border:1.5px solid #4D96FF30"><h5>🤜 BLW Puro</h5><p>Bastones 7cm que el bebé agarra con el puño. Se deshacen al presionar con la lengua.</p></div>
+      <div class="texture-box" style="background:#6BCB7712;border:1.5px solid #6BCB7730"><h5>🔀 BLW Mixto</h5><p>Purés muy suaves en bowl + bastón al lado para que explore.</p></div>
+    </div>
+    <div class="alert-card info"><span>✋</span><span><strong>Test de aplaste:</strong> Si no puedes aplastar el alimento entre dos dedos con poca fuerza, no está listo para el bebé de 6 meses.</span></div>
+    <div class="sub-header">7-8 meses — Más variedad</div>
+    <div class="texture-grid">
+      <div class="texture-box" style="background:#4D96FF12;border:1.5px solid #4D96FF30"><h5>🤜 BLW Puro</h5><p>Bastones, croquetas, bolitas compactas, florets. El bebé empieza a usar la pinza.</p></div>
+      <div class="texture-box" style="background:#6BCB7712;border:1.5px solid #6BCB7730"><h5>🔀 BLW Mixto</h5><p>Purés más gruesos, papillas con trozos, texturas mezcladas. Cuchara pre-cargada.</p></div>
+    </div>
+    <div class="sub-header">9-10 meses — Casi familiar</div>
+    <div class="texture-grid">
+      <div class="texture-box" style="background:#4D96FF12;border:1.5px solid #4D96FF30"><h5>🤜 BLW Puro</h5><p>Cubos 1-2cm, tiras, hebras. Usa pinza avanzada (índice+pulgar). Come solo de cucharas cortas.</p></div>
+      <div class="texture-box" style="background:#6BCB7712;border:1.5px solid #6BCB7730"><h5>🔀 BLW Mixto</h5><p>Texturas familiares suaves. Guisos, cremas, platos combinados con trozos visibles.</p></div>
+    </div>
+    <div class="sub-header">11-12 meses — Dieta familiar</div>
+    <div class="texture-grid">
+      <div class="texture-box" style="background:#4D96FF12;border:1.5px solid #4D96FF30"><h5>🤜 BLW Puro</h5><p>Come prácticamente todo lo que la familia. Adaptaciones mínimas: sin sal, sin miel, sin enteros peligrosos.</p></div>
+      <div class="texture-box" style="background:#6BCB7712;border:1.5px solid #6BCB7730"><h5>🔀 BLW Mixto</h5><p>Igual que BLW puro: la diferencia ya es mínima. Puede usar cuchara y tenedor de punta roma.</p></div>
+    </div>
+    <div class="alert-card danger"><span>🚫</span><span><strong>NUNCA hasta el año:</strong> Miel, bebidas vegetales como leche principal, sal añadida, azúcar, frutos secos enteros, uvas/cerezas enteras, salchichas enteras, maíz, manzana cruda dura.</span></div>
+  </div>`;
+}
+
+function buildRecetas() {
+  const recetas = [
+    { emoji:'🥞', title:'Tortitas de Plátano y Avena', meta:'5 min · Sin azúcar · 6 meses', ingredients:['2 plátanos maduros','2 huevos','100g copos de avena fina','Canela al gusto'], steps:['Aplasta los plátanos con un tenedor hasta obtener un puré.','Añade los huevos y la avena. Mezcla bien.','Forma tortitas pequeñas (tamaño palma del bebé).','Cocina en sartén sin aceite a fuego medio 2-3 min por lado.'], blw:'Tortita entera — el bebé la agarra y muerde.', mixed:'Tortita cortada en trozos pequeños + plátano aplastado al lado.' },
+    { emoji:'🥕', title:'Bastones de Zanahoria al Vapor', meta:'20 min · Sin sal · 6 meses', ingredients:['2 zanahorias medianas','Agua para vapor','Opcional: AOVE para servir'], steps:['Pela y corta las zanahorias en bastones de 7-8 cm de grosor adulto.','Cuece al vapor durante 18-20 minutos hasta que estén muy blandas.','Comprueba el test de aplaste: deben aplastarse con dos dedos.','Deja enfriar antes de ofrecer. Añade AOVE si quieres.'], blw:'Bastón entero — el bebé lo agarra con el puño.', mixed:'Bastón + puré de zanahoria en bowl.' },
+    { emoji:'🐟', title:'Croquetas de Merluza y Patata', meta:'30 min · Sin sal · 7 meses', ingredients:['150g merluza fresca sin espinas','1 patata mediana cocida','1 yema de huevo (para ligar)','Perejil fresco (opcional)'], steps:['Cuece la merluza al vapor 8 min. Desmenúzala y comprueba que no haya espinas.','Aplasta la patata cocida. Mezcla con la merluza desmenuzada.','Añade la yema de huevo y mezcla bien.','Forma croquetas del tamaño de un dedo. Hornea a 180°C 12 min dándoles la vuelta a mitad.'], blw:'Croqueta del tamaño de un dedo que puede agarrar.', mixed:'Croqueta aplastada en bowl con puré de verdura.' },
+    { emoji:'🍲', title:'Dal de Lentejas Rojas con Cúrcuma', meta:'25 min · Sin sal · 7 meses', ingredients:['80g lentejas rojas','200ml caldo sin sal de verduras','1 diente de ajo','1/2 cdta cúrcuma','1/2 cdta comino','Leche de coco (opcional)','AOVE'], steps:['Pon las lentejas con el caldo y el ajo en un cazo. Lleva a ebullición.','Reduce fuego y cuece 20 min hasta que las lentejas se deshagan.','Añade las especias y el AOVE. Mezcla bien.','Opcional: añade un chorro de leche de coco para suavizar.'], blw:'Forma bolitas compactas de lentejas para practicar la pinza.', mixed:'Dal en bowl — explorar con los dedos y la cuchara.' },
+    { emoji:'🫘', title:'Hummus Casero', meta:'10 min · Sin sal · 9 meses', ingredients:['1 lata de garbanzos (sin sal)','2 cdas tahini','Zumo de 1 limón','1 diente de ajo','2-3 cdas agua','AOVE'], steps:['Escurre y enjuaga los garbanzos.','Pon todos los ingredientes en el procesador.','Tritura hasta obtener una crema suave. Añade agua si queda muy espeso.','Sirve con un hilo de AOVE por encima.'], blw:'Untado en bastón de pan o de verdura cocida.', mixed:'En bowl para explorar con los dedos.' },
+    { emoji:'🥦', title:'Tortilla de Brócoli', meta:'15 min · Sin sal · 8 meses', ingredients:['2 huevos','4 florets de brócoli cocido','AOVE para la sartén'], steps:['Cuece el brócoli al vapor 12 min hasta que esté muy blando.','Aplasta los florets o córtalos muy pequeños.','Bate los huevos y mezcla con el brócoli.','Cocina en sartén con un hilo de AOVE a fuego medio. Cuaja por los dos lados.'], blw:'Tiras de tortilla del tamaño de un dedo.', mixed:'Tortilla aplastada con tenedor en bowl.' },
+    { emoji:'🧁', title:'Muffins de Plátano y Avena', meta:'25 min · Sin azúcar · 10 meses', ingredients:['2 plátanos muy maduros','2 huevos','150g copos de avena','1/2 cdta canela','Opcional: arándanos troceados'], steps:['Aplasta los plátanos. Mezcla con los huevos hasta homogéneo.','Añade la avena, la canela y los arándanos si los usas.','Rellena moldes de muffin hasta 3/4 de su capacidad.','Hornea a 175°C durante 20-22 min. Comprueba con palillo.'], blw:'Muffin entero que el bebé puede morder.', mixed:'Muffin aplastado en bowl con un poco de yogur natural.' }
+  ];
+  return `
+  <button class="back-btn" onclick="backToMoreHub()">← Volver</button>
+  <div class="section-topbar"><h1>👨‍🍳 Recetas BLW</h1><p>Sin sal, sin azúcar, sin miel</p></div>
+  <div class="info-section">
+    <div class="alert-card info"><span>👶</span><span>Todas las recetas son sin sal ni azúcar añadidos. Perfectas para bebés desde los 6 meses.</span></div>
+    ${recetas.map(r => `
+    <div class="recipe-card">
+      <div class="recipe-header" onclick="toggleRecipe(this)">
+        <span class="rh-emoji">${r.emoji}</span>
+        <div class="rh-info"><div class="rh-title">${r.title}</div><div class="rh-meta">${r.meta}</div></div>
+        <span class="rh-arrow">▼</span>
+      </div>
+      <div class="recipe-body">
+        <p style="font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;color:var(--text2);margin-bottom:8px">🧾 Ingredientes</p>
+        <ul style="padding-left:18px;font-size:0.85rem;line-height:1.8;font-weight:600;margin-bottom:14px">${r.ingredients.map(i => `<li>${i}</li>`).join('')}</ul>
+        <p style="font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;color:var(--text2);margin-bottom:8px">👨‍🍳 Preparación</p>
+        <ol style="padding-left:18px;font-size:0.85rem;line-height:1.8;font-weight:600;margin-bottom:14px">${r.steps.map(s => `<li>${s}</li>`).join('')}</ol>
+        <div class="duo-grid">
+          <div class="duo-box duo-blw"><h5>🤜 BLW Puro</h5>${r.blw}</div>
+          <div class="duo-box duo-mixed"><h5>🔀 BLW Mixto</h5>${r.mixed}</div>
+        </div>
+      </div>
+    </div>`).join('')}
+  </div>`;
+}
+
+function buildConsejos() {
+  return `
+  <button class="back-btn" onclick="backToMoreHub()">← Volver</button>
+  <div class="section-topbar"><h1>💡 Consejos y Seguridad</h1><p>Para una experiencia tranquila</p></div>
+  <div class="info-section">
+    <div class="alert-card danger"><span>🚨</span><span><strong>Atragantamiento vs Arcada:</strong> La arcada es un reflejo de seguridad — el bebé tose, se pone rojo, recupera. El atragantamiento es silencioso, el bebé no puede toser. Si hay silencio total y color azulado: actúa.</span></div>
+    <div class="sub-header">🛡️ Normas de seguridad básicas</div>
+    ${[
+      {icon:'👀', title:'Siempre supervisado', text:'El bebé NUNCA come solo. Supervisión adulta constante, sin distracciones de móvil.'},
+      {icon:'🪑', title:'Posición correcta', text:'Sentado erguido a 90°, con soporte lumbar. Nunca reclinado. El babero no puede ser un estrangulador.'},
+      {icon:'🍽️', title:'Tamaño correcto', text:'6 meses: bastones 7cm, más gruesos que el dedo índice adulto. Los trozos pequeños son más peligrosos que los grandes para bebés.'},
+      {icon:'🌡️', title:'Temperatura', text:'Siempre tibio o a temperatura ambiente. Nunca caliente. El bebé no sabe alejarse del calor.'},
+      {icon:'⏱️', title:'Sin distracciones', text:'Sin TV, sin pantallas durante la comida. El bebé necesita concentración para aprender a comer.'},
+      {icon:'😌', title:'Mantén la calma', text:'Si el bebé hace arcadas, mantén la calma y no intervengas. La ansiedad del adulto es contagiosa.'}
+    ].map(t => `<div class="tip-card"><span class="tc-icon">${t.icon}</span><div class="tc-content"><h4>${t.title}</h4><p>${t.text}</p></div></div>`).join('')}
+    <div class="sub-header">🚫 Alimentos peligrosos</div>
+    <div class="alert-card danger">
+      <span>❌</span>
+      <div style="font-size:0.83rem;font-weight:600;line-height:1.8">
+        <strong>Nunca antes del año:</strong><br>
+        🍯 Miel · 🧂 Sal añadida · 🍬 Azúcar · 🥛 Leche de vaca como bebida principal<br>
+        🌰 Frutos secos enteros · 🍇 Uvas/cerezas enteras · 🌭 Salchichas enteras<br>
+        🍿 Palomitas · 🌽 Granos de maíz · 🍎 Manzana cruda dura
+      </div>
+    </div>
+  </div>`;
+}
+
+function buildSueno() {
+  return `
+  <button class="back-btn" onclick="backToMoreHub()">← Volver</button>
+  <div class="section-topbar"><h1>😴 Guía de Sueño</h1><p>Entendiendo el sueño de Blanca</p></div>
+  <div class="info-section">
+    <div class="sub-header">⏰ Necesidades por edad</div>
+    ${[
+      {emoji:'👶',age:'6 meses',total:'14-15h',night:'10-11h',naps:'2-3 siestas (3-4h)'},
+      {emoji:'🧒',age:'9 meses',total:'13-14h',night:'10-11h',naps:'2 siestas (2-3h)'},
+      {emoji:'🚶',age:'12 meses',total:'12-14h',night:'10-12h',naps:'1-2 siestas (1.5-3h)'}
+    ].map(s => `<div class="sleep-need-card"><span class="snc-icon">${s.emoji}</span><div class="snc-info"><div class="snc-age">${s.age}</div><div class="snc-hours">${s.total} totales</div><div class="snc-detail">Noche: ${s.night} · ${s.naps}</div></div></div>`).join('')}
+    <div class="sub-header">📋 Rutinas orientativas</div>
+    <div class="tab-row">
+      <button class="tab-pill active" onclick="switchSleepTab('s6',this)">6 meses</button>
+      <button class="tab-pill" onclick="switchSleepTab('s9',this)">9 meses</button>
+      <button class="tab-pill" onclick="switchSleepTab('s12',this)">12 meses</button>
+    </div>
+    <div id="s6" class="card sleep-sched">
+      <span>7:00</span> Despertar<br><span>9:00-10:00</span> Siesta 1<br>
+      <span>13:00-14:30</span> Siesta 2<br><span>16:30-17:00</span> Siesta 3 (corta)<br>
+      <span>19:30</span> Inicio rutina nocturna<br><span>20:00-20:30</span> A dormir
+    </div>
+    <div id="s9" class="card sleep-sched" style="display:none">
+      <span>7:00</span> Despertar<br><span>9:30-11:00</span> Siesta 1<br>
+      <span>14:30-16:00</span> Siesta 2<br><span>19:00</span> Inicio rutina nocturna<br>
+      <span>19:30-20:00</span> A dormir
+    </div>
+    <div id="s12" class="card sleep-sched" style="display:none">
+      <span>7:00</span> Despertar<br><span>12:30-14:30</span> Siesta única<br>
+      <span>19:00</span> Inicio rutina nocturna<br><span>19:30-20:00</span> A dormir
+    </div>
+    <div class="sub-header">🔁 Regresiones de sueño</div>
+    <div class="card"><p style="font-size:0.83rem;font-weight:600;line-height:1.8">
+      Las regresiones de sueño son normales y temporales (2-6 semanas):<br>
+      📍 <strong>4 meses:</strong> La mayor regresión, cambio de ciclos de sueño<br>
+      📍 <strong>8-10 meses:</strong> Ansiedad de separación + gateo/bipedestación<br>
+      📍 <strong>12 meses:</strong> Transición a siesta única<br>
+      📍 <strong>Dentición:</strong> Molestias que interrumpen el sueño
+    </p></div>
+    <div class="alert-card success"><span>✨</span><span>Una rutina nocturna consistente (baño → masaje → canción → cuna) es la herramienta más poderosa para el sueño.</span></div>
+  </div>`;
+}
+
+function switchSleepTab(id, btn) {
+  ['s6','s9','s12'].forEach(i => {
+    const el = document.getElementById(i);
+    if (el) el.style.display = i === id ? '' : 'none';
+  });
+  document.querySelectorAll('#sub-screen-container .tab-pill').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function buildEstimulacion() {
+  const areas = [
+    { icon:'🏃', bg:'#FF6B6B20', title:'Motor Grueso', sub:'Fuerza y movimiento', exercises:[
+      {name:'Tummy time',desc:'20-30 min al día boca abajo. Empieza con 2-3 min y ve aumentando. Pon juguetes al frente para motivar.'},
+      {name:'Sedestación',desc:'De 6 a 7 meses. Empieza con apoyo en manos (trípode) y avanza hacia sentado sin apoyo.'},
+      {name:'Gateo',desc:'De 8-9 meses. Pon objetos un poco fuera de alcance. No fuerces ni uses andadores — son perjudiciales.'},
+      {name:'Bipedestación',desc:'De 9-10 meses. Permite que se agarre a muebles seguros y se ponga de pie.'}
+    ]},
+    { icon:'🤏', bg:'#4D96FF20', title:'Motor Fino', sub:'Pinza y coordinación', exercises:[
+      {name:'Pinza',desc:'Ofrece alimentos del tamaño de un guisante para practicar la pinza índice-pulgar a partir de 8 meses.'},
+      {name:'Cuchara autónoma',desc:'Ofrece cuchara pre-cargada desde el inicio. A los 9-10 meses puede intentar cargarla solo.'},
+      {name:'Apilar y encajar',desc:'Cubos, vasos apilables. Desarrolla coordinación y concepto espacial.'},
+      {name:'Señalar',desc:'Señalar objetos con el dedo índice aparece hacia los 9-10 meses. Refuerza cuando lo hace.'}
+    ]},
+    { icon:'🗣️', bg:'#6BCB7720', title:'Lenguaje', sub:'Comunicación y habla', exercises:[
+      {name:'Serve and return',desc:'Responde a sus vocalizaciones imitándolas. Este "turno de conversación" es fundamental para el desarrollo del lenguaje.'},
+      {name:'Lectura',desc:'Lee juntos desde el nacimiento. A los 6+ meses usa libros de tela o cartón. Señala y nombra los dibujos.'},
+      {name:'Canciones y rimas',desc:'Repite las mismas canciones con gestos. La repetición consolida el lenguaje.'},
+      {name:'Narración',desc:'Cuéntale lo que haces: "Ahora vamos a bañarnos, el agua está calentita..."'}
+    ]},
+    { icon:'🌟', bg:'#C77DFF20', title:'Sensorial', sub:'Exploración del entorno', exercises:[
+      {name:'Juego de texturas',desc:'Ofrece materiales con texturas diferentes: telas, espumas, plástico rugoso, arena (supervisada).'},
+      {name:'Espejo',desc:'Los bebés adoran los espejos. A los 6 meses empiezan a reconocer que el reflejo se mueve como ellos.'},
+      {name:'Exterior',desc:'Parque, arena, hierba, agua. El entorno natural ofrece riqueza sensorial que el hogar no puede replicar.'},
+      {name:'Música',desc:'Varía ritmos y estilos. El bebé responde a cambios de tempo y timbre.'}
+    ]},
+    { icon:'❤️', bg:'#FFB34720', title:'Emocional y Apego', sub:'Vínculo y regulación', exercises:[
+      {name:'Porteo',desc:'El porteo fisiológico refuerza el apego, regula el llanto y libera las manos.'},
+      {name:'Juego cara a cara',desc:'Interacciones de mirada, sonrisa y vocalización. Base del desarrollo social.'},
+      {name:'Rutinas predecibles',desc:'La predictibilidad da seguridad. Mismos rituales de comida, siesta y noche.'},
+      {name:'Base segura',desc:'Permite explorar desde la seguridad. No sobreestimules; el bebé también necesita pausas.'}
+    ]}
+  ];
+  return `
+  <button class="back-btn" onclick="backToMoreHub()">← Volver</button>
+  <div class="section-topbar"><h1>🧠 Estimulación</h1><p>Actividades por área de desarrollo</p></div>
+  <div class="info-section">
+    <div class="alert-card warning"><span>⚠️</span><span><strong>Andadores:</strong> La OMS y la Academia Americana de Pediatría los desaconsejan. Retrasan el gateo y la marcha autónoma y son causa frecuente de accidentes.</span></div>
+    ${areas.map(a => `
+    <div class="stim-card">
+      <div class="stim-cat-header">
+        <div class="stim-cat-icon" style="background:${a.bg}">${a.icon}</div>
+        <div><div class="stim-cat-title">${a.title}</div><div style="font-size:0.75rem;color:var(--text2);font-weight:600">${a.sub}</div></div>
+      </div>
+      ${a.exercises.map(e => `<div class="exercise-item"><strong>${e.name}:</strong> ${e.desc}</div>`).join('')}
+    </div>`).join('')}
+  </div>`;
+}
+
+// Toggle helpers
+function toggleContentCard(header) {
+  header.classList.toggle('open');
+  header.nextElementSibling.classList.toggle('open');
+}
+function toggleRecipe(header) {
+  header.classList.toggle('open');
+  header.nextElementSibling.classList.toggle('open');
+}
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+const todayStr = new Date().toISOString().slice(0,10);
+['weightDate','poopDate','diaryDate','sleepDate'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.value = todayStr;
+});
+renderWeight();
+renderPoop();
+renderDiary();
+renderSleepDiary();
+</script>
+</body>
+</html>
