@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guía BLW Mixto y Diario del Bebé</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#f6f1ea;
+      --surface:#fffdf9;
+      --surface-2:#f1e9df;
+      --text:#2b241d;
+      --muted:#74695f;
+      --line:#ddd1c4;
+      --primary:#7d4c8d;
+      --primary-soft:#efe4f5;
+      --primary-2:#d6a06d;
+      --green:#5f7a54;
+      --pink:#cf7f8f;
+      --gold:#c6933a;
+      --danger:#b85042;
+      --radius:22px;
+      --shadow:0 18px 50px rgba(73,43,21,.08);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:'Inter',system-ui,sans-serif;background:linear-gradient(180deg,#f8f3ec 0%,#f4ede3 100%);color:var(--text);line-height:1.55}
+    a{color:inherit}
+    .shell{max-width:1180px;margin:0 auto;padding:24px}
+    .topbar{position:sticky;top:0;z-index:40;backdrop-filter:blur(14px);background:rgba(246,241,234,.8);border-bottom:1px solid rgba(138,90,68,.12)}
+    .topbar-inner{max-width:1180px;margin:0 auto;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;gap:14px}
+    .brand{display:flex;align-items:center;gap:14px}
+    .logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--primary-2));display:grid;place-items:center;color:#fff;box-shadow:var(--shadow);font-weight:800}
+    .brand h1{margin:0;font-size:1rem}
+    .brand p{margin:2px 0 0;color:var(--muted);font-size:.83rem}
+    .nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+    .nav a{padding:10px 14px;border-radius:999px;text-decoration:none;background:rgba(255,255,255,.58);border:1px solid rgba(138,90,68,.12);font-size:.92rem}
+    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;padding:28px 0 20px}
+    .hero-card,.panel{background:var(--surface);border:1px solid var(--line);border-radius:32px;box-shadow:var(--shadow)}
+    .hero-card{padding:34px}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:var(--primary-soft);color:var(--primary);font-size:.84rem;font-weight:700;margin-bottom:16px}
+    h2,h3,h4{margin:0 0 10px}
+    .display{font-family:'Instrument Serif',serif;font-size:clamp(2.6rem,5.4vw,5.2rem);line-height:.96;letter-spacing:-.03em;margin-bottom:14px}
+    .lead{font-size:1.05rem;color:#4e433a;max-width:64ch}
+    .hero-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px}
+    .mini{padding:16px;border-radius:20px;background:linear-gradient(180deg,#fff 0%,#f7eefc 100%);border:1px solid rgba(125,76,141,.12)}
+    .mini strong{display:block;margin-bottom:6px}
+    .side{padding:24px;display:grid;gap:16px}
+    .tag{display:inline-block;padding:7px 10px;border-radius:999px;background:#efe4f5;color:var(--primary);font-weight:700;font-size:.8rem}
+    .checklist,.simple-list{padding-left:18px;margin:0}
+    section{padding:18px 0}
+    .section-head{display:flex;justify-content:space-between;gap:16px;align-items:end;margin-bottom:16px}
+    .section-head p{margin:0;color:var(--muted);max-width:70ch}
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+    .card p{margin:0;color:#51463d}
+    .warn{border-left:5px solid var(--danger);background:#fff7f5}
+    .ok{border-left:5px solid var(--green);background:#f7fbf6}
+    .week-wrap{display:grid;grid-template-columns:280px 1fr;gap:18px}
+    .week-menu{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:12px;position:sticky;top:88px;height:fit-content;box-shadow:var(--shadow)}
+    .week-btn{width:100%;text-align:left;padding:14px 16px;border:0;background:transparent;border-radius:18px;font-weight:700;color:var(--text);cursor:pointer}
+    .week-btn.active{background:#f1e5d9;color:var(--primary)}
+    .week-panel{background:var(--surface);border:1px solid var(--line);border-radius:28px;padding:24px;box-shadow:var(--shadow)}
+    .week-title{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+    .pill{padding:8px 12px;border-radius:999px;background:#f3ece4;font-size:.84rem;color:var(--primary);font-weight:700}
+    .days{display:grid;gap:14px}
+    .day{border:1px solid var(--line);border-radius:22px;padding:18px;background:#fffdfa}
+    .day-top{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+    .layout-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+    .box{background:var(--surface-2);padding:14px;border-radius:18px;border:1px solid rgba(138,90,68,.08)}
+    .box h4{font-size:.95rem;margin-bottom:6px}
+    .note{font-size:.92rem;color:var(--muted)}
+    .recipe-grid,.stim-grid,.sleep-grid,.diary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+    .recipe{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:var(--shadow)}
+    .recipe ul{margin:10px 0 0;padding-left:18px}
+    .recipe small{display:inline-block;margin-top:12px;color:var(--muted)}
+    .diary{background:var(--surface);border:1px solid var(--line);border-radius:28px;padding:24px;box-shadow:var(--shadow)}
+    .diary-grid{grid-template-columns:repeat(2,1fr)}
+    label{display:block;font-size:.9rem;font-weight:700;margin-bottom:6px}
+    input,textarea,select{width:100%;border:1px solid var(--line);background:#fff;border-radius:16px;padding:12px 14px;font:inherit;color:var(--text)}
+    textarea{min-height:96px;resize:vertical}
+    .save-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+    button.primary{border:0;background:linear-gradient(135deg,var(--primary),#a76f56);color:#fff;padding:12px 18px;border-radius:999px;font-weight:800;cursor:pointer}
+    button.secondary{border:1px solid var(--line);background:#fff;padding:12px 18px;border-radius:999px;font-weight:700;cursor:pointer}
+    .saved{font-size:.92rem;color:var(--green);font-weight:700}
+    footer{padding:28px 0 40px;color:var(--muted);font-size:.92rem}
+    @media (max-width: 960px){
+      .hero,.week-wrap,.cards,.recipe-grid,.stim-grid,.sleep-grid,.diary-grid,.layout-2{grid-template-columns:1fr}
+      .hero-grid{grid-template-columns:1fr}
+      .week-menu{position:static}
+      .topbar-inner{align-items:flex-start;flex-direction:column}
+      .nav{justify-content:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">B</div>
+        <div>
+          <h1>BLW mixto + diario del bebé</h1>
+          <p>Guía práctica para empezar con BLW mixto</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#inicio">Inicio</a>
+        <a href="#que-es">Qué es BLW</a>
+        <a href="#plan">Plan semanal</a>
+        <a href="#recetas">Recetas</a>
+        <a href="#alergenos">Alérgenos</a>
+        <a href="#sueno">Sueño</a>
+        <a href="#estimulacion">Estimulación</a>
+        <a href="#diario">Diarios</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section id="inicio" class="hero">
+      <div class="hero-card">
+        <span class="eyebrow">Guía práctica, moderna y editable</span>
+        <div class="display">Empieza con calma, observa mucho y ofrece el mismo alimento en dos formatos.</div>
+        <p class="lead">Con 4 meses la prioridad no es empezar a comer sólidos, sino preparar el terreno: rutina, postura, señales de preparación, cuchara precargada, juego sensorial y organización familiar. La alimentación complementaria suele iniciarse alrededor de los 6 meses, manteniendo la leche como alimento principal y pudiendo variar la presentación entre triturada, chafada o en trozos seguros según tolerancia y desarrollo. [file:16][web:17]</p>
+        <div class="hero-grid">
+          <div class="mini"><strong>Ahora mismo</strong><span>Fase de preparación: sueño, postura, trona, observación y juego oral seguro.</span></div>
+          <div class="mini"><strong>Desde el inicio</strong><span>Formato mixto: entero seguro + triturado espeso del mismo alimento en la misma comida o en momentos próximos. [web:17]</span></div>
+          <div class="mini"><strong>Objetivo real</strong><span>Explorar, tocar, oler y aprender; no sustituir leche en las primeras semanas. [file:16]</span></div>
+        </div>
+      </div>
+      <aside class="panel side">
+        <span class="tag">Antes de empezar</span>
+        <ul class="checklist">
+          <li>Consulta con pediatría si hay prematuridad, reflujo importante, dificultades de deglución o dudas de desarrollo. [file:16]</li>
+          <li>Las señales de preparación que ya recoge tu web siguen siendo la base: control de cabeza, buena postura con apoyo, interés por la comida y capacidad de llevar objetos a la boca. [file:16]</li>
+          <li>La AEP aconseja introducir variedad de frutas y verduras y variar también la forma de presentación, incluyendo triturada, chafada y pequeños trozos según etapa. [web:17][web:24]</li>
+        </ul>
+        <div class="card warn">
+          <h3>No a los 4 meses salvo indicación médica</h3>
+          <p>Esta versión deja claro que a los 4 meses se prepara el entorno, y el plan práctico está pensado para cuando llegue el momento de inicio real, habitualmente hacia los 6 meses. [file:16][web:24]</p>
+        </div>
+      </aside>
+    </section>
+
+
+    <section id="que-es">
+      <div class="section-head">
+        <div>
+          <h2>Qué es BLW</h2>
+          <p>El Baby-Led Weaning es una forma de introducir la alimentación complementaria en la que el bebé participa desde el principio, explorando la comida con sus manos y llevando los alimentos a la boca, siempre con supervisión y con texturas seguras. [web:35][web:36][file:16]</p>
+        </div>
+      </div>
+      <div class="cards">
+        <article class="card"><h3>Autonomía</h3><p>El bebé decide cuánto come y si quiere probar; el adulto decide qué, cuándo y dónde se ofrece. [file:16]</p></article>
+        <article class="card"><h3>Texturas seguras</h3><p>Se priorizan piezas blandas, fáciles de aplastar entre dedos, y la mezcla con triturados espesos cuando el enfoque es mixto. [web:36][web:38]</p></article>
+        <article class="card"><h3>Mesa familiar</h3><p>La idea es acercar al bebé a los alimentos reales de la familia, adaptando sal, forma y tamaño. [file:16]</p></article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <h2>Qué cambia en esta versión</h2>
+          <p>He reorganizado el contenido para que sea más limpio, más visual y mucho más útil en el día a día.</p>
+        </div>
+      </div>
+      <div class="cards">
+        <article class="card">
+          <h3>Plan mixto real</h3>
+          <p>Cada día propone el mismo alimento en dos formatos: autónomo y triturado espeso, con preparación, textura y observación.</p>
+        </article>
+        <article class="card">
+          <h3>Recetas incluidas</h3>
+          <p>Se añaden recetas sencillas y repetibles, sin sal ni azúcar, pensadas para bebé y mesa familiar.</p>
+        </article>
+        <article class="card">
+          <h3>Diario ampliado</h3>
+          <p>Podrás anotar formato probado, reacción, heces, sueño, aceptación y observaciones del día.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="alergenos">
+      <div class="section-head">
+        <div>
+          <h2>Alérgenos</h2>
+          <p>Los alérgenos pueden introducirse al comenzar la alimentación complementaria, de uno en uno y con vigilancia, respetando el consejo profesional si el bebé tiene alto riesgo de alergia. [web:38][web:41][file:16]</p>
+        </div>
+      </div>
+      <div class="cards">
+        <article class="card"><h3>Huevo</h3><p>Empieza con huevo bien cocido y ofrécelo en pequeñas cantidades, observando reacción cutánea o digestiva.</p></article>
+        <article class="card"><h3>Pescado, lácteos y gluten</h3><p>Son parte de la introducción progresiva y pueden formar parte del plan si se presentan de forma segura. [web:38][web:41]</p></article>
+        <article class="card"><h3>Frutos secos</h3><p>Siempre en crema o mantequilla, nunca enteros, por riesgo de atragantamiento. [file:16]</p></article>
+      </div>
+    </section>
+
+    <section id="plan">
+      <div class="section-head">
+        <div>
+          <h2>Plan semanal desde el inicio</h2>
+          <p>Propuesta orientativa para arrancar cuando el bebé esté listo. Se recomienda empezar con cantidades pequeñas, por la mañana o al mediodía, con el bebé descansado y la leche como base. [file:16][web:17]</p>
+        </div>
+      </div>
+      <div class="week-wrap">
+        <div class="week-menu" id="weekMenu"></div>
+        <div class="week-panel" id="weekPanel"></div>
+      </div>
+    </section>
+
+    <section id="recetas">
+      <div class="section-head">
+        <div>
+          <h2>Recetas sencillas</h2>
+          <p>Preparaciones blandas, repetibles y fáciles de adaptar al formato entero o triturado. La idea es cocinar una vez y servir dos presentaciones. [web:17][web:20][web:27]</p>
+        </div>
+      </div>
+      <div class="recipe-grid" id="recipeGrid"></div>
+      <div class="note" style="margin-top:14px">Sugerencia visual: coloca fotos o ilustraciones de corte seguro junto a cada receta para mostrar gajos, bastones, crema espesa y cuchara precargada.</div>
+    </section>
+
+    <section id="sueno">
+      <div class="section-head">
+        <div>
+          <h2>Sueño a los 4 meses</h2>
+          <p>Esta parte sí es útil desde ya: una rutina predecible, ventanas de sueño razonables y un entorno tranquilo suelen ayudar más que intentar alargar demasiado la vigilia. [web:22][web:25]</p>
+        </div>
+      </div>
+      <div class="sleep-grid">
+        <article class="card ok">
+          <h3>Pautas prácticas</h3>
+          <ul class="simple-list">
+            <li>A esta edad son frecuentes 3–4 siestas al día y ventanas orientativas de 1 h 30 min a 2 h. [web:22]</li>
+            <li>Un bebé de 4 meses suele dormir en total unas 12–15 horas al día, aunque con variación individual. [web:25]</li>
+            <li>Rutina breve y repetible: luz baja, cambio de pañal, toma, canción o balanceo suave y cuna. [web:22][web:25]</li>
+            <li>Observa señales tempranas: bostezos, mirada perdida, irritabilidad o frotarse los ojos. [web:25]</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Mini rutina orientativa</h3>
+          <p>Ejemplo suave: despertar sobre las 7:00, primera siesta hacia las 8:30, siguientes siestas cada 1 h 30 min a 2 h de vigilia, y rutina nocturna hacia las 19:30–20:00. Es solo una guía flexible, no un horario rígido. [web:22]</p>
+          <p class="note">Evita ofrecer prácticas nuevas de alimentación justo cuando esté muy cansado; tu propio HTML ya indica que el mejor momento es cuando el bebé está descansado, de buen humor y con algo de hambre. [file:16]</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="estimulacion">
+      <div class="section-head">
+        <div>
+          <h2>Estimulación y juego</h2>
+          <p>Inspirado en el tipo de trabajo que suele difundir fisioterapia pediátrica: menos tiempo, más veces al día, siempre vigilado y sin forzar. [web:23][web:26][web:29]</p>
+        </div>
+      </div>
+      <div class="stim-grid">
+        <article class="card">
+          <h3>Tummy time</h3>
+          <ul class="simple-list">
+            <li>Puede hacerse en periodos cortos y frecuentes, idealmente cuando está despierto y receptivo. [web:23][web:29]</li>
+            <li>Entre el primer mes y los 4 meses se puede progresar gradualmente hasta 20–30 minutos diarios repartidos en varias tandas. [web:23]</li>
+            <li>No justo después de la toma y nunca sin supervisión. [web:23][web:29]</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Ideas fáciles</h3>
+          <ul class="simple-list">
+            <li>Sobre tu pecho o barriga, hablándole de cerca. [web:23][web:26]</li>
+            <li>En manta con espejo, sonajero o contraste visual a su altura. [web:23]</li>
+            <li>Con una toalla enrollada o cojín de lactancia bajo el pecho si necesita ayuda. [web:26]</li>
+            <li>Pelota grande o rulo con apoyo adulto cuando tolere mejor el boca abajo. [web:26][web:14]</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="diario">
+      <div class="section-head">
+        <div>
+          <h2>Diarios separados</h2>
+          <p>Usa cada pestaña para registrar alimentación, cacas, sueño y peso por separado, de forma clara y práctica. [file:16]</p>
+        </div>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden">
+        <div style="display:flex;flex-wrap:wrap;gap:8px;padding:16px 16px 0">
+          <button class="secondary" onclick="switchDiary('alim')">Alimentación</button>
+          <button class="secondary" onclick="switchDiary('cacas')">Cacas</button>
+          <button class="secondary" onclick="switchDiary('sueno')">Sueño</button>
+          <button class="secondary" onclick="switchDiary('peso')">Peso</button>
+        </div>
+        <div id="diaryTabs"></div>
+      </div>
+    </section>
+
+    <footer>
+      Esta guía es orientativa y no sustituye la valoración profesional. La introducción de sólidos suele iniciarse alrededor de los 6 meses y debe adaptarse al desarrollo y al consejo sanitario individual. [web:24][file:16]
+    </footer>
+  </main>
+
+  <script>
+    const weeks = [
+      {
+        label:'Semana 1 · Inicio suave',
+        badge:'1 comida al día',
+        intro:'Primeros días para explorar. Ofrece el alimento cuando esté tranquilo, sentado con buen soporte y preferiblemente por la mañana o al mediodía. [file:16][web:17]',
+        days:[
+          {day:'Día 1',food:'Aguacate',whole:'Gajo grande, maduro, pelado parcialmente para que no resbale.',puree:'Aguacate chafado con tenedor, textura espesa y lisa.',prep:'Abrir, retirar hueso, cortar en gajos gruesos; reservar parte para chafar.',texture:'Muy blanda, cremosa y aplastable entre dedos.',watch:'Observar agarre, succión, reflejo nauseoso protector y tolerancia digestiva.'},
+          {day:'Día 2',food:'Calabacín',whole:'Bastones largos muy cocidos al vapor o hervidos.',puree:'Crema espesa de calabacín sin sal.',prep:'Pelar si hace falta, cocer hasta que se aplaste con presión ligera.',texture:'Húmeda, blanda, sin hebras duras.',watch:'Si acepta mejor tibio que frío y si hay interés por cogerlo.'},
+          {day:'Día 3',food:'Repetición',whole:'Repite aguacate o calabacín en formato entero.',puree:'Repite en triturado para consolidar exposición.',prep:'No hace falta introducir novedad diaria; repetir también enseña.',texture:'La misma textura segura del día previo.',watch:'La repetición ayuda a distinguir tolerancia real de reacción puntual. [file:16]'},
+          {day:'Día 4',food:'Pera madura',whole:'Mitad pelada o gajos muy maduros al vapor si aún está dura.',puree:'Pera cocida chafada o triturada espesa.',prep:'Si está muy madura puede ofrecerse fresca; si no, cocinar unos minutos.',texture:'Jugosa y muy blanda.',watch:'Observar si se deshace demasiado en mano y ajustar maduración.'}
+        ]
+      },
+      {
+        label:'Semana 2 · Verduras suaves',
+        badge:'1 comida al día',
+        intro:'Sigue con un ritmo calmado y mantén exposición frecuente a lo ya conocido. [file:16]',
+        days:[
+          {day:'Día 1',food:'Zanahoria cocida',whole:'Bastón muy grande y muy cocido.',puree:'Puré espeso de zanahoria con unas gotas del agua de cocción.',prep:'Cocer bastante tiempo hasta que quede muy blanda.',texture:'Blanda pero consistente, no crujiente.',watch:'Nunca cruda ni dura; vigilar que no se astille.'},
+          {day:'Día 2',food:'Patata',whole:'Gajos grandes cocidos o asados muy blandos.',puree:'Patata chafada con un poco de leche materna o fórmula si quieres aligerar.',prep:'Cocer o asar sin sal; comprobar que se deshace fácil.',texture:'Harinosa y blanda.',watch:'Si queda seca, ofrecer con más humedad para mejorar aceptación.'},
+          {day:'Día 3',food:'Brócoli',whole:'Arbolito grande con tallo como mango.',puree:'Brócoli cocido triturado espeso.',prep:'Cocer al vapor hasta muy tierno.',texture:'Blanda con floretes tiernos.',watch:'Suele funcionar bien para agarre y exploración sensorial.'},
+          {day:'Día 4',food:'Repetición de favoritos',whole:'Combina dos alimentos ya conocidos en el plato.',puree:'Ofrece uno de ellos en triturado si ese día está más cansado.',prep:'La combinación permite comparar aceptación por formato.',texture:'Dos texturas blandas distintas.',watch:'No hace falta aumentar cantidad; prima la experiencia. [web:17]'}
+        ]
+      },
+      {
+        label:'Semana 3 · Fruta y cereal',
+        badge:'1–2 momentos breves',
+        intro:'Si todo va bien, puedes empezar a jugar con más variedad de presentaciones y una segunda exposición breve en otro momento del día. [web:17]',
+        days:[
+          {day:'Día 1',food:'Plátano',whole:'Medio plátano con parte de la piel retirada para agarre.',puree:'Plátano chafado con tenedor.',prep:'Muy maduro, sin hilos duros.',texture:'Blanda y ligeramente pegajosa.',watch:'Ideal para practicar agarre y cuchara precargada.'},
+          {day:'Día 2',food:'Avena',whole:'Porridge espeso servido en cucharita precargada o sobre dedo de pan apto si ya tolera.',puree:'La misma avena, solo más fina si lo necesita.',prep:'Cocer con agua o leche habitual hasta textura densa.',texture:'Espesa, no líquida.',watch:'Los purés y papillas deben ser espesos, no muy fluidos. [web:21]'},
+          {day:'Día 3',food:'Calabaza',whole:'Media luna asada muy blanda con piel retirada.',puree:'Crema espesa de calabaza.',prep:'Asar o cocer hasta que se aplaste fácil.',texture:'Muy tierna y dulce.',watch:'Suele mejorar aceptación por sabor suave.'},
+          {day:'Día 4',food:'Repetición y comparación',whole:'Ofrece el favorito de la semana en formato entero.',puree:'Compáralo con el mismo alimento en puré espeso.',prep:'Sirve ambos a la vez para ver preferencia.',texture:'Misma materia prima, dos experiencias.',watch:'Tu formato mixto funciona mejor cuando no conviertes el triturado en “obligación”.'}
+        ]
+      },
+      {
+        label:'Semana 4 · Proteína suave',
+        badge:'Introducción orientativa',
+        intro:'Cuando el arranque sea cómodo, puedes valorar proteína suave bien cocinada y presentaciones fáciles de manejar. [file:16][web:21]',
+        days:[
+          {day:'Día 1',food:'Lenteja cocida',whole:'Muy cocida y ligeramente aplastada sobre cucharita precargada o mezclada en hamburguesita blanda.',puree:'Puré espeso de lenteja.',prep:'Cocer mucho tiempo, sin sal, y triturar parte.',texture:'Pastosa y húmeda.',watch:'Las legumbres pueden ir machacadas y combinadas con cereal. [web:21]'},
+          {day:'Día 2',food:'Pollo',whole:'Tira grande muy cocida o hebras húmedas.',puree:'Pollo triturado con calabacín o patata para que no quede seco.',prep:'Cocer bien y desmenuzar fino.',texture:'Tierna y húmeda, nunca seca.',watch:'La proteína seca se acepta peor; mezcla con vegetal si hace falta.'},
+          {day:'Día 3',food:'Yogur natural entero',whole:'En cucharita precargada; no necesita formato autónomo sólido.',puree:'Se puede mezclar con pera chafada.',prep:'Natural, sin azúcar.',texture:'Cremosa y espesa.',watch:'Los lácteos fermentados pueden introducirse antes que la leche de vaca como bebida, que en tu web ya dejas para el año. [file:16]'},
+          {day:'Día 4',food:'Revisión de semana',whole:'Escoge lo mejor tolerado y repite.',puree:'Anota qué textura funcionó mejor.',prep:'No busques avanzar rápido; busca confianza.',texture:'Segura y conocida.',watch:'Registrar reacciones ayuda a detectar preferencias y posibles problemas. [file:16]'}
+        ]
+      }
+    ];
+
+    const recipes = [
+      {
+        title:'Puré espeso + gajos de aguacate',
+        intro:'Una misma fruta en dos formatos fáciles para el primer contacto. [web:17][web:20]',
+        items:['1 aguacate maduro','Cortar 2–3 gajos grandes para mano','Chafar el resto con tenedor','Servir sin sal ni limón al principio'],
+        tip:'Si resbala, deja parte de la piel o pásalo por una fina capa de avena molida.'
+      },
+      {
+        title:'Calabacín doble textura',
+        intro:'Sirve bastones cocidos y una crema espesa del mismo lote. [web:17][web:27]',
+        items:['1 calabacín','Cocer al vapor hasta muy tierno','Reservar bastones largos','Triturar el resto con poca agua'],
+        tip:'Debe poder aplastarse entre los dedos con facilidad. [file:16]'
+      },
+      {
+        title:'Patata cremosa familiar',
+        intro:'Base simple que se adapta bien al formato mixto. [web:20][web:27]',
+        items:['1 patata mediana','Cocer o asar sin sal','Sacar gajos grandes muy blandos','Chafar una parte con textura espesa'],
+        tip:'Puedes aligerar con leche materna o fórmula si queda demasiado seca.'
+      },
+      {
+        title:'Brócoli al vapor + crema',
+        intro:'Muy útil para practicar agarre con el tallo y explorar olores. [file:16]',
+        items:['1 brócoli pequeño','Separar floretes con tallo largo','Cocer al vapor hasta tierno','Triturar los más blandos'],
+        tip:'No debe quedar crujiente ni fibroso.'
+      },
+      {
+        title:'Avena espesa de cuchara',
+        intro:'Papilla muy densa para precargar cucharita, mejor espesa que líquida. [web:21]',
+        items:['2 cucharadas de copos finos','Agua o leche habitual','Cocinar hasta textura densa','Aplastar bien si quedan copos grandes'],
+        tip:'También puede mezclarse con plátano chafado.'
+      },
+      {
+        title:'Pollo con calabaza',
+        intro:'Proteína suave cuando el inicio ya es cómodo. [web:21]',
+        items:['Pechuga o contramuslo bien cocido','Calabaza muy blanda','Hacer tiras húmedas','Triturar parte con la calabaza'],
+        tip:'La mezcla evita que la carne quede seca y difícil de aceptar.'
+      }
+    ];
+
+    const menu = document.getElementById('weekMenu');
+    const panel = document.getElementById('weekPanel');
+
+    function renderWeekMenu(active=0){
+      menu.innerHTML = weeks.map((w,i)=>`<button class="week-btn ${i===active?'active':''}" onclick="renderWeek(${i})">${w.label}</button>`).join('');
+    }
+
+    function renderWeek(i=0){
+      renderWeekMenu(i);
+      const w = weeks[i];
+      panel.innerHTML = `
+        <div class="week-title">
+          <div>
+            <h3>${w.label}</h3>
+            <p class="note">${w.intro}</p>
+          </div>
+          <span class="pill">${w.badge}</span>
+        </div>
+        <div class="days">
+          ${w.days.map(d=>`
+            <article class="day">
+              <div class="day-top">
+                <h4>${d.day} · ${d.food}</h4>
+                <span class="pill">Observar, no forzar</span>
+              </div>
+              <p><strong>Preparación:</strong> ${d.prep}</p>
+              <div class="layout-2">
+                <div class="box"><h4>Formato entero</h4><p>${d.whole}</p></div>
+                <div class="box"><h4>Formato triturado</h4><p>${d.puree}</p></div>
+              </div>
+              <p><strong>Textura esperada:</strong> ${d.texture}</p>
+              <p class="note"><strong>Qué observar:</strong> ${d.watch}</p>
+            </article>
+          `).join('')}
+        </div>`;
+    }
+
+    document.getElementById('recipeGrid').innerHTML = recipes.map(r=>`
+      <article class="recipe">
+        <h3>${r.title}</h3>
+        <p>${r.intro}</p>
+        <ul>${r.items.map(i=>`<li>${i}</li>`).join('')}</ul>
+        <small>${r.tip}</small>
+      </article>
+    `).join('');
+
+    const diaryTemplates = {
+      alim: `
+        <div class="diary" style="border:0;border-radius:0;box-shadow:none">
+          <h3>Alimentación</h3>
+          <div class="diary-grid">
+            <div><label>Fecha</label><input id="fechaA" type="date"></div>
+            <div><label>Alimento ofrecido</label><input id="alimentoA" type="text" placeholder="Ej. aguacate"></div>
+            <div><label>Formato entero</label><textarea id="enteroA" placeholder="Ej. gajo grande maduro"></textarea></div>
+            <div><label>Formato triturado</label><textarea id="trituradoA" placeholder="Ej. puré espeso"></textarea></div>
+            <div><label>Cómo reaccionó</label><textarea id="reaccionA" placeholder="Lo chupó, lo aplastó, hizo arcadas normales..."></textarea></div>
+            <div><label>Otras notas</label><textarea id="notasA" placeholder="Alergia, humor, postura..."></textarea></div>
+          </div>
+          <div class="save-row"><button class="primary" onclick="saveSection('alim')">Guardar</button></div>
+          <div id="list-alim" style="margin-top:18px"></div>
+        </div>`,
+      cacas: `
+        <div class="diary" style="border:0;border-radius:0;box-shadow:none">
+          <h3>Cacas</h3>
+          <div class="diary-grid">
+            <div><label>Fecha</label><input id="fechaC" type="date"></div>
+            <div><label>Frecuencia</label><input id="frecuenciaC" type="text" placeholder="Ej. 1 al día"></div>
+            <div><label>Aspecto</label><textarea id="aspectoC" placeholder="Color, textura, si hubo moco..."></textarea></div>
+            <div><label>Digestión</label><textarea id="digestionC" placeholder="Gases, estreñimiento, normal..."></textarea></div>
+          </div>
+          <div class="save-row"><button class="primary" onclick="saveSection('cacas')">Guardar</button></div>
+          <div id="list-cacas" style="margin-top:18px"></div>
+        </div>`,
+      sueno: `
+        <div class="diary" style="border:0;border-radius:0;box-shadow:none">
+          <h3>Sueño</h3>
+          <div class="diary-grid">
+            <div><label>Fecha</label><input id="fechaS" type="date"></div>
+            <div><label>Noches / siestas</label><input id="siestasS" type="text" placeholder="Ej. 3 siestas + noche"></div>
+            <div><label>Rutina</label><textarea id="rutinaS" placeholder="Luz baja, baño, toma, canción..."></textarea></div>
+            <div><label>Observaciones</label><textarea id="obsS" placeholder="Despertares, cansancio, ventanas de sueño..."></textarea></div>
+          </div>
+          <div class="save-row"><button class="primary" onclick="saveSection('sueno')">Guardar</button></div>
+          <div id="list-sueno" style="margin-top:18px"></div>
+        </div>`,
+      peso: `
+        <div class="diary" style="border:0;border-radius:0;box-shadow:none">
+          <h3>Peso</h3>
+          <div class="diary-grid">
+            <div><label>Fecha</label><input id="fechaP" type="date"></div>
+            <div><label>Peso</label><input id="pesoP" type="text" placeholder="Ej. 6,2 kg"></div>
+            <div><label>Percentil / nota</label><textarea id="notaP" placeholder="Si lo tienes, añade percentil o comentario de pediatría"></textarea></div>
+            <div><label>Observaciones</label><textarea id="obsP" placeholder="Apetito, crecimiento, consulta..."></textarea></div>
+          </div>
+          <div class="save-row"><button class="primary" onclick="saveSection('peso')">Guardar</button></div>
+          <div id="list-peso" style="margin-top:18px"></div>
+        </div>`
+    };
+    function diaryKey(section){ return 'blwDiary_' + section; }
+    function loadSection(section){ try{return JSON.parse(localStorage.getItem(diaryKey(section))||'[]')}catch(e){return []} }
+    function storeSection(section,data){ try{localStorage.setItem(diaryKey(section),JSON.stringify(data))}catch(e){} }
+    function switchDiary(section){ document.getElementById('diaryTabs').innerHTML = diaryTemplates[section]; renderDiaryList(section); }
+    function saveSection(section){
+      const map={ alim:['fechaA','alimentoA','enteroA','trituradoA','reaccionA','notasA'], cacas:['fechaC','frecuenciaC','aspectoC','digestionC'], sueno:['fechaS','siestasS','rutinaS','obsS'], peso:['fechaP','pesoP','notaP','obsP'] };
+      const fields = map[section];
+      const entry = {}; fields.forEach(id=>entry[id]=document.getElementById(id).value.trim());
+      if(!Object.values(entry).some(Boolean)) return;
+      const data = loadSection(section); data.unshift(entry); storeSection(section,data); fields.forEach(id=>document.getElementById(id).value=''); renderDiaryList(section);
+    }
+    function renderDiaryList(section){
+      const data = loadSection(section); const el=document.getElementById('list-'+section);
+      if(!el) return;
+      el.innerHTML = data.length ? data.map(e=>`<article class="card" style="margin:12px 0"><pre style="white-space:pre-wrap;font-family:inherit;margin:0">${Object.values(e).filter(Boolean).join('
+')}</pre></article>`).join('') : '<p class="note" style="padding:0 16px 18px">Sin registros todavía.</p>';
+    }
+    function exportDiary(){
+      const all={alim:loadSection('alim'),cacas:loadSection('cacas'),sueno:loadSection('sueno'),peso:loadSection('peso')};
+      const blob=new Blob([JSON.stringify(all,null,2)],{type:'application/json'});
+      const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='diarios-blw.json'; a.click(); URL.revokeObjectURL(a.href);
+    }
+    renderWeek();
+    switchDiary('alim');
+  </script>
+</body>
+</html>
